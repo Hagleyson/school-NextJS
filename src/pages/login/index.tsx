@@ -27,14 +27,11 @@ const schema = Yup.object()
 
 export default function Home() {
   const {
-    control,
     handleSubmit,
-    setValue,
     register,
     formState: { errors },
-  } = useForm({
-    resolver: yupResolver(schema),
-  });
+  } = useForm();
+
   async function handleSignIn(data: any): Promise<void> {
     console.log(data);
   }
@@ -53,9 +50,8 @@ export default function Home() {
                 </InputAdornment>
               ),
             }}
-            inputRef={register}
-            name="email"
             label="Usuário"
+            {...register("email")}
           />
 
           <Input
@@ -66,10 +62,9 @@ export default function Home() {
                 </InputAdornment>
               ),
             }}
-            inputRef={register}
-            name="password"
             label="Senha"
             type="password"
+            {...register("password")}
           />
 
           <ButtonLogin type="submit" variant="contained">
