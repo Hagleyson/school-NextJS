@@ -1,35 +1,82 @@
+import { InputAdornment } from "@mui/material";
+
 import {
-  Box,
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  Typography,
-} from "@mui/material";
+  Content,
+  CardLogin,
+  TextLogin,
+  ButtonLogin,
+  FormLogin,
+  Input,
+} from "./style";
+import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import LockIcon from "@mui/icons-material/Lock";
 
-import { CardForm, Description, Content, ContainerLogin } from "./style";
+import { Controller, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-const bull = (
-  <Box
-    component="span"
-    sx={{ display: "inline-block", mx: "2px", transform: "scale(0.8)" }}
-  >
-    •
-  </Box>
-);
+import * as Yup from "yup";
+
+const schema = Yup.object()
+  .shape({
+    email: Yup.string()
+      .email("Email deve ser válido")
+      .required("Campo obrigatório"),
+    password: Yup.string().required("Senha é obrigatória"),
+  })
+  .required();
 
 export default function Home() {
+  const {
+    control,
+    handleSubmit,
+    setValue,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  async function handleSignIn(data: any): Promise<void> {
+    console.log(data);
+  }
   return (
     <Content>
-      <Description>Bem Vindo!</Description>
-      <ContainerLogin>
-        <CardForm>
-          <CardContent></CardContent>
-          <CardActions>
-            <Button size="small">Learn More</Button>
-          </CardActions>
-        </CardForm>
-      </ContainerLogin>
+      <CardLogin>
+        <TextLogin variant="h1">
+          Olá! <p>Faça login para acessar sua conta.</p>
+        </TextLogin>
+        <FormLogin onSubmit={handleSubmit(handleSignIn)}>
+          <Input
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <PersonOutlineIcon />
+                </InputAdornment>
+              ),
+            }}
+            inputRef={register}
+            name="email"
+            label="Usuário"
+          />
+
+          <Input
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <LockIcon />
+                </InputAdornment>
+              ),
+            }}
+            inputRef={register}
+            name="password"
+            label="Senha"
+            type="password"
+          />
+
+          <ButtonLogin type="submit" variant="contained">
+            Enviar
+          </ButtonLogin>
+        </FormLogin>
+      </CardLogin>
     </Content>
   );
 }
