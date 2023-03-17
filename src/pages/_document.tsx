@@ -12,10 +12,15 @@ import { AppType } from "next/app";
 import theme, { roboto } from "@/config/theme";
 import createEmotionCache from "@/config/createEmotionCache";
 import { MyAppProps } from "./_app";
+import styled from "@emotion/styled";
 
 interface MyDocumentProps extends DocumentProps {
   emotionStyleTags: JSX.Element[];
 }
+
+const Body = styled.body`
+  background: #c8cccf;
+`;
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
@@ -26,10 +31,10 @@ export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
         <meta name="emotion-insertion-point" content="" />
         {emotionStyleTags}
       </Head>
-      <body>
+      <Body>
         <Main />
         <NextScript />
-      </body>
+      </Body>
     </Html>
   );
 }
