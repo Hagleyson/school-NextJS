@@ -11,8 +11,7 @@ import {
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LockIcon from "@mui/icons-material/Lock";
 
-import { Controller, useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 
 import * as Yup from "yup";
 

@@ -19,12 +19,20 @@ interface MyDocumentProps extends DocumentProps {
 }
 
 const Body = styled.body`
-  background: #c8cccf;
+  height: 100vh;
+  #__next {
+    box-sizing: border-box;
+    border: 1px solid black;
+    height: 100%;
+
+    display: flex;
+    flex-direction: column;
+  }
 `;
 
 export default function MyDocument({ emotionStyleTags }: MyDocumentProps) {
   return (
-    <Html lang="en" className={roboto.className}>
+    <Html lang="en" className={roboto.className} style={{ margin: "0px" }}>
       <Head>
         <meta name="theme-color" content={theme.palette.primary.main} />
         <link rel="shortcut icon" href="/favicon.ico" />
