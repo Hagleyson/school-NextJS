@@ -18,8 +18,10 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 
 import LogoutOutlinedIcon from "@mui/icons-material/LogoutOutlined";
-import { menuData } from "./menuData";
-import { LinkMenu } from "./style";
+import { menuData } from "./Menu/menuData";
+import { LinkMenu } from "./Menu/style";
+import BreadCrumb from "./BreadCrumb";
+import { useRouter } from "next/router";
 
 const drawerWidth = 240;
 
@@ -94,6 +96,7 @@ const Drawer = styled(MuiDrawer, {
 export default function Layout({ children }: { children: React.ReactNode }) {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
+  const route = useRouter();
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -167,6 +170,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
         <DrawerHeader />
+        <BreadCrumb route={route.pathname} />
         {children}
       </Box>
     </Box>
