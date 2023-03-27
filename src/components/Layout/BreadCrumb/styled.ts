@@ -3,6 +3,5 @@ import Link from "next/link";
 
 export const LinkBreadCrumb = styled(Link)`
   width: 100%;
-  /* color:${(props) => props.theme.palette.text.primary} */
-  text-decoration: underline;
+  color: ${(props) => props.theme.palette.text.secondary}!important;
 `;

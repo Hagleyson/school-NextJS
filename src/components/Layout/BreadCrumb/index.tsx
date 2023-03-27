@@ -30,7 +30,7 @@ const BreadCrumb = ({ route }: { route: string }) => {
       return;
     }
     breadCrumb.push(
-      <LinkBreadCrumb key={idx} href={element}>
+      <LinkBreadCrumb key={idx} href={`/${element}`}>
         {toPascalCase(element)}
       </LinkBreadCrumb>
     );
