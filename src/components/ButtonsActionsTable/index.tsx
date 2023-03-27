@@ -13,13 +13,13 @@ export default function ButtonsActionsTable({
   return (
     <>
       <Tooltip title="Editar Registro">
-        <UpdateButton onClick={() => handleClick(secure_id, "update")} />
+        <UpdateButton onClick={() => handleClick("update", secure_id)} />
       </Tooltip>
       <Tooltip title="Apagar Registro">
-        <DeleteButton onClick={() => handleClick(secure_id, "register")} />
+        <DeleteButton onClick={() => console.log("deletar")} />
       </Tooltip>
       <Tooltip title="Visualizar Registro">
-        <ViewButton onClick={() => handleClick(secure_id, "view")} />
+        <ViewButton onClick={() => handleClick("view", secure_id)} />
       </Tooltip>
     </>
   );

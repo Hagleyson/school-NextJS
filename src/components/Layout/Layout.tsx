@@ -109,19 +109,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const list = () => (
     <Box sx={{ width: 250 }}>
       <List>
-        {menuData.map(({ name, icon, url }) => {
-          console.log(url);
-          return (
-            <ListItem key={name} disablePadding>
-              <LinkMenu href={`${url}`}>
-                <ListItemButton>
-                  <ListItemIcon>{icon}</ListItemIcon>
-                  <ListItemText primary={name} />
-                </ListItemButton>
-              </LinkMenu>
-            </ListItem>
-          );
-        })}
+        {menuData.map(({ name, icon, url }) => (
+          <ListItem key={name} disablePadding>
+            <LinkMenu href={`${url}`}>
+              <ListItemButton>
+                <ListItemIcon>{icon}</ListItemIcon>
+                <ListItemText primary={name} />
+              </ListItemButton>
+            </LinkMenu>
+          </ListItem>
+        ))}
         <Divider />
 
         <ListItem key={"Sair"} disablePadding>

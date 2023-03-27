@@ -11,9 +11,10 @@ import {
 import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
 import LockIcon from "@mui/icons-material/Lock";
 
-import { useForm } from "react-hook-form";
-
 import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { useForm } from "react-hook-form";
 
 const schema = Yup.object()
   .shape({
@@ -29,7 +30,7 @@ export default function Home() {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm();
+  } = useForm({ resolver: yupResolver(schema) });
 
   async function handleSignIn(data: any): Promise<void> {
     console.log(data);

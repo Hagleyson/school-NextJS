@@ -31,7 +31,7 @@ export default function Register() {
   return (
     <>
       <BoxTitle>
-        <Title>Cadastro de Professores</Title>
+        <Title>Atualização de Professores</Title>
       </BoxTitle>
       <Divider />
       <Form onSubmit={handleSubmit(submit)}>
