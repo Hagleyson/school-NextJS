@@ -1,0 +1,1 @@
+export { translateUrl } from "./translateUrl";
