@@ -49,7 +49,6 @@ export default function Teacher() {
   };
 
   const handleRedirect = (type: string, secure_id?: string) => {
-    console.log(type);
     router.push({
       pathname: `professores/${translateUrl(type)}`,
       query: { secure_id, type },

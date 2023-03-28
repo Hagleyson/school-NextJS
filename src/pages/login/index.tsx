@@ -15,6 +15,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useForm } from "react-hook-form";
+import { useUser } from "@/context/AuthContext";
 
 const schema = Yup.object()
   .shape({
@@ -25,15 +26,16 @@ const schema = Yup.object()
   })
   .required();
 
-export default function Home() {
+export default function Login() {
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+  const { signIn } = useUser();
 
   async function handleSignIn(data: any): Promise<void> {
-    console.log(data);
+    signIn(data);
   }
   return (
     <Content>
