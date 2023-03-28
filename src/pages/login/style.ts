@@ -2,8 +2,8 @@ import styled from "@emotion/styled";
 import { Button, Card, TextField, Typography } from "@mui/material";
 
 export const Content = styled.div`
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   display: flex;
   background: #f0f2f5;
   align-items: center;

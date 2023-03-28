@@ -12,7 +12,8 @@ import {
   TableRow,
 } from "@mui/material";
 import * as React from "react";
-import { translateUrl } from "@/shared/helpers";
+import { redirectPage, translateUrl } from "@/shared/helpers";
+import { GetServerSideProps } from "next";
 
 function createData(
   secure_id: string,
@@ -112,3 +113,14 @@ export default function Teacher() {
     </>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const result = redirectPage(ctx);
+
+  if (result) {
+    return result;
+  }
+
+  return {
+    props: {},
+  };
+};

@@ -10,6 +10,7 @@ export interface ILoggedUser {
   token: string;
   type: string;
   expireAt: string;
+  code?: string;
 }
 export interface ISign {
   email: string;

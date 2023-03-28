@@ -5,22 +5,24 @@ import Router from "next/router";
 import { authServices } from "@/shared/services/index";
 import { ISign, IUserResponse } from "@/shared/Interfaces";
 import { IAuthContext } from "./interface";
+import { toast } from "react-toastify";
+import { translateErrosLogin } from "@/shared/helpers";
+import { TOKEN, USER } from "@/shared/constant";
 
 export const AuthContext = createContext({} as IAuthContext);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<IUserResponse>({} as IUserResponse);
+
   const { login } = authServices();
 
   const isAuthenticated = !!user;
 
   useEffect(() => {
-    const { user: user } = parseCookies();
-    // console.log("user ", user);
-
-    // if (user) {
-    //   setUser(JSON.parse(user));
-    // }
+    const { USER: user } = parseCookies();
+    if (user) {
+      setUser(JSON.parse(user));
+    }
   }, []);
 
   async function signIn({ email, password }: ISign) {
@@ -29,17 +31,23 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         email,
         password,
       });
+      const { data } = response;
+
       if (response.status === 200) {
-        const { data } = response;
-        setCookie(undefined, "token", data.token, {
-          maxAge: 60 * 60 * 1, // 1 hour
+        setCookie(undefined, TOKEN, data.token, {
+          maxAge: 60 * 60 * 1,
         });
-        setCookie(undefined, "user", JSON.stringify(data.user));
+        setCookie(undefined, USER, JSON.stringify(data.user));
         setUser(data.user);
 
-        // Router.push("/");
+        Router.push("/");
+        return;
       }
-    } catch (error) {}
+
+      throw { error: data.code };
+    } catch ({ error }: any) {
+      toast.error(translateErrosLogin(error));
+    }
   }
 
   return (

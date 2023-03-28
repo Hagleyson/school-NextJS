@@ -6,6 +6,8 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
+import { GetServerSideProps } from "next";
+import { redirectPage } from "@/shared/helpers";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Campo obrigatório"),
@@ -90,3 +92,15 @@ export default function Register() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const result = redirectPage(ctx);
+
+  if (result) {
+    return result;
+  }
+
+  return {
+    props: {},
+  };
+};

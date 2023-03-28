@@ -20,9 +20,9 @@ import { useUser } from "@/context/AuthContext";
 const schema = Yup.object()
   .shape({
     email: Yup.string()
-      .email("Email deve ser válido")
-      .required("Campo obrigatório"),
-    password: Yup.string().required("Senha é obrigatória"),
+      .email("Digite um E-mail válido")
+      .required("Digite um E-mail válido"),
+    password: Yup.string().required("Por Favor Digite Sua Senha "),
   })
   .required();
 
@@ -53,6 +53,8 @@ export default function Login() {
               ),
             }}
             label="Usuário"
+            error={!!errors.email?.message}
+            helperText={errors.email?.message?.toString()}
             {...register("email")}
           />
 
@@ -66,6 +68,8 @@ export default function Login() {
             }}
             label="Senha"
             type="password"
+            helperText={errors.password?.message?.toString()}
+            error={!!errors.password?.message}
             {...register("password")}
           />
 

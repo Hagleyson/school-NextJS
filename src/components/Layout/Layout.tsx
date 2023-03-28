@@ -23,6 +23,9 @@ import { LinkMenu } from "./Menu/style";
 import BreadCrumb from "./BreadCrumb";
 import { useRouter } from "next/router";
 
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
+
 const drawerWidth = 240;
 
 const openedMixin = (theme: Theme): CSSObject => ({
@@ -176,3 +179,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     </Box>
   );
 }
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const { ["token"]: token } = parseCookies(ctx);
+  console.log("Okokokokokok");
+
+  if (!token) {
+    return {
+      redirect: {
+        destination: "/login",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};

@@ -11,6 +11,9 @@ import createEmotionCache from "@/config/createEmotionCache";
 
 import { Layout } from "@/components";
 import { AuthProvider } from "@/context/AuthContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useRouter } from "next/router";
 
 const clientSideEmotionCache = createEmotionCache();
 
@@ -18,8 +21,12 @@ export interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
 
-export default function MyApp(props: MyAppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+export default function MyApp({
+  Component,
+  emotionCache = clientSideEmotionCache,
+  pageProps,
+}: MyAppProps) {
+  const { pathname } = useRouter();
 
   return (
     <AuthProvider>
@@ -29,11 +36,25 @@ export default function MyApp(props: MyAppProps) {
         </Head>
 
         <ThemeProvider theme={theme}>
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+          />
           <CssBaseline />
-
-          <Layout>
+          {["/login"].includes(pathname) ? (
             <Component {...pageProps} />
-          </Layout>
+          ) : (
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          )}
         </ThemeProvider>
       </CacheProvider>
     </AuthProvider>
