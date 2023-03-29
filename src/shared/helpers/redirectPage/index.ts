@@ -1,11 +1,19 @@
-import { toast } from "react-toastify";
 import { TOKEN } from "./../../constant/cookies";
 import { parseCookies } from "nookies";
 
-export function redirectPage(ctx: any) {
+export function redirectPage(ctx: any, isAuthPage?: boolean) {
   const { [TOKEN]: token } = parseCookies(ctx);
-  toast.warn("Sessão Expirada");
-  if (!token) {
+  if (isAuthPage && token) {
+    console.log("1");
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+  if (!token && !isAuthPage) {
+    console.log("2");
     return {
       redirect: {
         destination: "/login",

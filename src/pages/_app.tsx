@@ -20,7 +20,7 @@ const clientSideEmotionCache = createEmotionCache();
 export interface MyAppProps extends AppProps {
   emotionCache?: EmotionCache;
 }
-
+const pagesWithoutLayout = ["/login"];
 export default function MyApp({
   Component,
   emotionCache = clientSideEmotionCache,
@@ -48,7 +48,7 @@ export default function MyApp({
             pauseOnHover
           />
           <CssBaseline />
-          {["/login"].includes(pathname) ? (
+          {pagesWithoutLayout.includes(pathname) ? (
             <Component {...pageProps} />
           ) : (
             <Layout>

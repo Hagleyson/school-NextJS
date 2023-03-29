@@ -1,4 +1,4 @@
-import { InputAdornment } from "@mui/material";
+import { IconButton, InputAdornment } from "@mui/material";
 
 import {
   Content,
@@ -16,6 +16,10 @@ import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useForm } from "react-hook-form";
 import { useUser } from "@/context/AuthContext";
+import { GetServerSideProps } from "next";
+import { redirectPage } from "@/shared/helpers";
+import { useState } from "react";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 
 const schema = Yup.object()
   .shape({
@@ -33,10 +37,14 @@ export default function Login() {
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
   const { signIn } = useUser();
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
 
   async function handleSignIn(data: any): Promise<void> {
     signIn(data);
   }
+
   return (
     <Content>
       <CardLogin>
@@ -65,11 +73,21 @@ export default function Login() {
                   <LockIcon />
                 </InputAdornment>
               ),
+              endAdornment: (
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    edge="end"
+                  >
+                    {showPassword ? <VisibilityOff /> : <Visibility />}
+                  </IconButton>
+                </InputAdornment>
+              ),
             }}
-            label="Senha"
-            type="password"
             helperText={errors.password?.message?.toString()}
             error={!!errors.password?.message}
+            type={showPassword ? "text" : "password"}
             {...register("password")}
           />
 
@@ -81,3 +99,15 @@ export default function Login() {
     </Content>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const result = redirectPage(ctx, true);
+
+  if (result) {
+    return result;
+  }
+
+  return {
+    props: {},
+  };
+};

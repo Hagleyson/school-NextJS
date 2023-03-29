@@ -38,8 +38,12 @@ const BreadCrumb = ({ route }: { route: string }) => {
 
   return (
     <>
-      <Breadcrumbs aria-label="breadcrumb">{breadCrumb}</Breadcrumbs>
-      <Divider variant="fullWidth" style={{ marginTop: "10px" }} />
+      {route !== "/" && (
+        <>
+          <Breadcrumbs aria-label="breadcrumb">{breadCrumb}</Breadcrumbs>
+          <Divider variant="fullWidth" style={{ marginTop: "10px" }} />
+        </>
+      )}
     </>
   );
 };
