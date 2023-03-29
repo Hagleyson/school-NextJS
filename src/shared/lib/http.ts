@@ -1,4 +1,5 @@
 import axios from "axios";
+import { parseCookies } from "nookies";
 
 const Http = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -6,10 +7,11 @@ const Http = axios.create({
 
 Http.interceptors.request.use(
   (config) => {
-    const response = { token: { token: "" } };
+    const { TOKEN: token } = parseCookies();
+
     const { headers } = config;
-    if (response.token) {
-      headers.Authorization = `Bearer ${response.token.token}`;
+    if (token) {
+      headers.Authorization = `Bearer ${token}`;
     }
     headers["Content-Type"] = "application/json";
     headers.Accept = "application/json";

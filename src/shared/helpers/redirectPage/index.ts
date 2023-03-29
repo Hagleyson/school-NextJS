@@ -4,7 +4,6 @@ import { parseCookies } from "nookies";
 export function redirectPage(ctx: any, isAuthPage?: boolean) {
   const { [TOKEN]: token } = parseCookies(ctx);
   if (isAuthPage && token) {
-    console.log("1");
     return {
       redirect: {
         destination: "/",
@@ -13,7 +12,6 @@ export function redirectPage(ctx: any, isAuthPage?: boolean) {
     };
   }
   if (!token && !isAuthPage) {
-    console.log("2");
     return {
       redirect: {
         destination: "/login",
