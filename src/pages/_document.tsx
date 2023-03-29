@@ -22,7 +22,6 @@ const Body = styled.body`
   height: 100vh;
   #__next {
     box-sizing: border-box;
-    border: 1px solid black;
     height: 100%;
 
     display: flex;

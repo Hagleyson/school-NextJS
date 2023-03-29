@@ -10,7 +10,7 @@ import theme from "@/config/theme";
 import createEmotionCache from "@/config/createEmotionCache";
 
 import { Layout } from "@/components";
-import { AuthProvider } from "@/context/AuthContext";
+import { AuthProvider } from "@/context/authContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useRouter } from "next/router";

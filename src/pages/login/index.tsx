@@ -15,7 +15,7 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { useForm } from "react-hook-form";
-import { useUser } from "@/context/AuthContext";
+import { useUser } from "@/context/authContext";
 import { GetServerSideProps } from "next";
 import { redirectPage } from "@/shared/helpers";
 import { useState } from "react";

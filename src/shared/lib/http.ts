@@ -30,7 +30,7 @@ Http.interceptors.response.use(
   },
   (error) => {
     const { isAxiosError = false, response = null } = error;
-    if (isAxiosError && response && response.status === 403) {
+    if (isAxiosError && response && response.status === 401) {
       removeCookies();
       return Promise.reject(error);
     }

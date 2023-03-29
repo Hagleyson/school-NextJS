@@ -7,7 +7,6 @@ import { ISign, IUserResponse } from "@/shared/Interfaces";
 import { IAuthContext } from "./interface";
 import { toast } from "react-toastify";
 import { createSession, translateErrosLogin } from "@/shared/helpers";
-import { TOKEN, USER } from "@/shared/constant";
 
 export const AuthContext = createContext({} as IAuthContext);
 

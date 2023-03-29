@@ -11,7 +11,7 @@ export const urls = {
     update: (secure_id: string): string => `/users/${secure_id}`,
   },
   teacher: {
-    get: (): string => `/teacher/`,
+    get: (): string => `/teacher`,
     show: (secure_id: string): string => `/teacher/${secure_id}`,
     post: (): string => `/teacher`,
     delete: (secure_id: string): string => `/teacher/${secure_id}`,

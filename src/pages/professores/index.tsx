@@ -11,9 +11,12 @@ import {
   TablePagination,
   TableRow,
 } from "@mui/material";
+import { DataGrid } from "@mui/x-data-grid";
+
 import * as React from "react";
 import { redirectPage, translateUrl } from "@/shared/helpers";
 import { GetServerSideProps } from "next";
+import { TeacherProvider, useTeacher } from "@/context/teacherContext";
 
 function createData(
   secure_id: string,
@@ -35,16 +38,18 @@ const rows = [
   createData("5", "Gingerbread", "356", "16.0", "49", "3.9"),
 ];
 
-export default function Teacher() {
-  const [page, setPage] = React.useState(0);
+function TeacherComponent() {
+  const [page, setPage] = React.useState(1);
   const router = useRouter();
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const { listAll, teachers, meta } = useTeacher();
 
   const handleChangePage = (event: any, newPage: any) => {
     setPage(newPage);
   };
 
   const handleChangeRowsPerPage = (event: any) => {
+    console.log(event.target.value);
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -56,6 +61,27 @@ export default function Teacher() {
     });
   };
 
+  React.useEffect(() => {
+    listAll(page);
+  }, [page]);
+
+  const columns = [
+    { field: "name", headerName: "Nome" },
+    { field: "lastName", headerName: "Sobrenome" },
+    {
+      field: "cpf",
+      headerName: "CPF",
+    },
+    {
+      field: "training",
+      headerName: "Curso",
+    },
+    {
+      field: "birth_date",
+      headerName: "Data de Nascimento",
+    },
+  ];
+
   return (
     <>
       <BoxTitle>
@@ -65,6 +91,7 @@ export default function Teacher() {
         </Button>
       </BoxTitle>
       <Divider />
+
       <Table>
         <TableHead>
           <TableRow>
@@ -76,7 +103,7 @@ export default function Teacher() {
             <TableCell align="right">Ação</TableCell>
           </TableRow>
         </TableHead>
-        {rows.map((row) => (
+        {teachers.map((row) => (
           <TableRow
             key={row.name}
             sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
@@ -100,10 +127,10 @@ export default function Teacher() {
         <TableFooter>
           <TableRow>
             <TablePagination
-              rowsPerPageOptions={[10]}
-              count={10}
-              rowsPerPage={2}
-              page={page}
+              rowsPerPageOptions={[meta.per_page ?? 10]}
+              count={meta.total ?? 0}
+              rowsPerPage={10}
+              page={0}
               onPageChange={handleChangePage}
               onRowsPerPageChange={handleChangeRowsPerPage}
             />
@@ -124,3 +151,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     props: {},
   };
 };
+
+export default function Teacher() {
+  return (
+    <TeacherProvider>
+      <TeacherComponent />
+    </TeacherProvider>
+  );
+}
