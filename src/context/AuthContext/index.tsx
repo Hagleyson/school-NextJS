@@ -6,7 +6,7 @@ import { authServices } from "@/shared/services/index";
 import { ISign, IUserResponse } from "@/shared/Interfaces";
 import { IAuthContext } from "./interface";
 import { toast } from "react-toastify";
-import { translateErrosLogin } from "@/shared/helpers";
+import { createSession, translateErrosLogin } from "@/shared/helpers";
 import { TOKEN, USER } from "@/shared/constant";
 
 export const AuthContext = createContext({} as IAuthContext);
@@ -34,12 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const { data } = response;
 
       if (response.status === 200) {
-        setCookie(undefined, TOKEN, data.token, {
-          maxAge: 60 * 60 * 11,
-        });
-        setCookie(undefined, USER, JSON.stringify(data.user), {
-          maxAge: 60 * 60 * 11,
-        });
+        createSession(data.token, data.user);
         setUser(data.user);
 
         Router.push("/");

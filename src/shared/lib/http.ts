@@ -1,5 +1,6 @@
 import axios from "axios";
 import { parseCookies } from "nookies";
+import { removeCookies } from "../helpers";
 
 const Http = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
@@ -30,7 +31,7 @@ Http.interceptors.response.use(
   (error) => {
     const { isAxiosError = false, response = null } = error;
     if (isAxiosError && response && response.status === 403) {
-      //   destroySession();
+      removeCookies();
       return Promise.reject(error);
     }
     return response;
