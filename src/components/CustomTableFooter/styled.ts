@@ -1,6 +1,7 @@
-import { Stack, TableFooter, styled } from "@mui/material";
+import styled from "@emotion/styled";
+import { Stack } from "@mui/material";
 
-export const CustomTableFooterStyled = styled(TableFooter)`
+export const CustomTableFooterStyled = styled.div`
   display: flex;
   justify-content: end;
 `;

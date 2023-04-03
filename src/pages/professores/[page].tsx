@@ -2,6 +2,7 @@ import {
   BoxTitle,
   ButtonsActionsTable,
   CustomTableFooter,
+  Loader,
   Title,
 } from "@/components";
 import { useRouter } from "next/router";
@@ -50,6 +51,7 @@ export default function Teacher({ meta, data: teachers }: IListAllTeacher) {
         </Button>
       </BoxTitle>
       <Divider />
+      {<Loader />}
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -118,11 +120,3 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   };
 };
-
-// export default function Teacher() {
-//   return (
-//     <TeacherProvider>
-//       <TeacherComponent />
-//     </TeacherProvider>
-//   );
-// }
