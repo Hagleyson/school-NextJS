@@ -25,6 +25,7 @@ import { GetServerSideProps } from "next";
 
 import { teacherServices } from "@/shared/services";
 import { IListAllTeacher } from "@/shared/Interfaces";
+import { setContext } from "@/shared/lib";
 
 export default function Teacher({ meta, data: teachers }: IListAllTeacher) {
   const router = useRouter();
@@ -102,7 +103,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { params } = ctx;
   const page = Number(params?.page) ?? 1;
 
-  const response = await listAllService({
+  setContext(ctx);
+
+  const { data } = await listAllService({
     params: {
       page,
     },
@@ -110,18 +113,8 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   return {
     props: {
-      meta: {
-        total: 1,
-        per_page: 1,
-        current_page: 1,
-        last_page: 1,
-        first_page: 1,
-        first_page_url: 1,
-        last_page_url: 1,
-        next_page_url: 1,
-        previous_page_url: 1,
-      },
-      data: [],
+      meta: data.meta,
+      data: data.data,
     },
   };
 };

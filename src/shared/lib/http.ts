@@ -16,7 +16,6 @@ export const setContext = (_context: GetServerSidePropsContext) => {
 Http.interceptors.request.use(
   (config) => {
     const { TOKEN: token } = parseCookies(context);
-    console.log("token ", token);
 
     const { headers } = config;
     if (token) {
