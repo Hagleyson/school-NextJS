@@ -6,3 +6,4 @@ export { default as ButtonsActionsTable } from "./ButtonsActionsTable/index";
 export { default as Input } from "./Input/Index";
 export { default as Form } from "./Form/index";
 export { default as Button } from "./Button/index";
+export { default as CustomTableFooter } from "./CustomTableFooter/index";
