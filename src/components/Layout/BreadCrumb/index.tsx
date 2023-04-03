@@ -1,9 +1,4 @@
-import {
-  Breadcrumbs,
-  Divider,
-  Link as LinkMaterial,
-  Typography,
-} from "@mui/material";
+import { Breadcrumbs, Divider, Typography } from "@mui/material";
 import { LinkBreadCrumb } from "./styled";
 
 export const toPascalCase = (url: string) => {
@@ -24,7 +19,7 @@ const BreadCrumb = ({ route }: { route: string }) => {
     if (removeEquals.length - 1 === idx) {
       breadCrumb.push(
         <Typography key={idx} color="text.secondary">
-          {toPascalCase(element)}
+          {toPascalCase(element === "[page]" ? "listagem" : element)}
         </Typography>
       );
       return;
