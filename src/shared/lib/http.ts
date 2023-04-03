@@ -1,14 +1,22 @@
 import axios from "axios";
 import { parseCookies } from "nookies";
 import { removeCookies } from "../helpers";
+import { GetServerSidePropsContext } from "next";
+
+let context = <GetServerSidePropsContext>{};
 
 const Http = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL,
 });
 
+export const setContext = (_context: GetServerSidePropsContext) => {
+  context = _context;
+};
+
 Http.interceptors.request.use(
   (config) => {
-    const { TOKEN: token } = parseCookies();
+    const { TOKEN: token } = parseCookies(context);
+    console.log("token ", token);
 
     const { headers } = config;
     if (token) {

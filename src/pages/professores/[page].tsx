@@ -22,13 +22,12 @@ import * as React from "react";
 import { redirectPage, translateUrl } from "@/shared/helpers";
 
 import { GetServerSideProps } from "next";
-import { TeacherProvider, useTeacher } from "@/context/teacherContext";
 
-function TeacherComponent() {
-  const [page, setPage] = React.useState(1);
+import { teacherServices } from "@/shared/services";
+import { IListAllTeacher } from "@/shared/Interfaces";
+
+export default function Teacher({ meta, data: teachers }: IListAllTeacher) {
   const router = useRouter();
-
-  const { listAll, teachers, meta } = useTeacher();
 
   const handleRedirect = (type: string, secure_id?: string) => {
     router.push({
@@ -37,13 +36,10 @@ function TeacherComponent() {
     });
   };
 
-  React.useEffect(() => {
-    listAll(page);
-  }, [page]);
-
   const handleChange = (_: any, value: any) => {
-    setPage(value);
+    console.log("Okokokok ", value);
   };
+
   return (
     <>
       <BoxTitle>
@@ -101,16 +97,39 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (result) {
     return result;
   }
+  const { listAll: listAllService } = teacherServices();
+
+  const { params } = ctx;
+  const page = Number(params?.page) ?? 1;
+
+  const response = await listAllService({
+    params: {
+      page,
+    },
+  });
 
   return {
-    props: {},
+    props: {
+      meta: {
+        total: 1,
+        per_page: 1,
+        current_page: 1,
+        last_page: 1,
+        first_page: 1,
+        first_page_url: 1,
+        last_page_url: 1,
+        next_page_url: 1,
+        previous_page_url: 1,
+      },
+      data: [],
+    },
   };
 };
 
-export default function Teacher() {
-  return (
-    <TeacherProvider>
-      <TeacherComponent />
-    </TeacherProvider>
-  );
-}
+// export default function Teacher() {
+//   return (
+//     <TeacherProvider>
+//       <TeacherComponent />
+//     </TeacherProvider>
+//   );
+// }
