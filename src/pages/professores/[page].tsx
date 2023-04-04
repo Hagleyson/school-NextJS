@@ -20,7 +20,7 @@ import {
 } from "@mui/material";
 
 import * as React from "react";
-import { redirectPage, translateUrl } from "@/shared/helpers";
+import { formatCPF, redirectPage, translateUrl } from "@/shared/helpers";
 
 import { GetServerSideProps } from "next";
 
@@ -28,6 +28,7 @@ import { teacherServices } from "@/shared/services";
 import { IListAllTeacher } from "@/shared/Interfaces";
 import { setContext } from "@/shared/lib";
 import useLoading from "@/shared/hooks/useIsLoader";
+import moment from "moment";
 
 export default function Teacher({ meta, data: teachers }: IListAllTeacher) {
   const router = useRouter();
@@ -80,9 +81,11 @@ export default function Teacher({ meta, data: teachers }: IListAllTeacher) {
                     {row.name}
                   </TableCell>
                   <TableCell align="right">{row.last_name}</TableCell>
-                  <TableCell align="right">{row.cpf}</TableCell>
+                  <TableCell align="right">{formatCPF(row.cpf)}</TableCell>
                   <TableCell align="right">{row.training}</TableCell>
-                  <TableCell align="right">{row.birth_date}</TableCell>
+                  <TableCell align="right">
+                    {moment(row.birth_date).utc().format("DD/MM/YYYY")}
+                  </TableCell>
                   <TableCell align="right" width={140}>
                     <ButtonsActionsTable
                       key={row.secure_id}

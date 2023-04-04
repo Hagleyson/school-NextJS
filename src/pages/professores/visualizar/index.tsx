@@ -80,7 +80,7 @@ export default function Register() {
           <Grid item xs={2} md={1}>
             <Button
               handleClick={() => {
-                replace("/professores");
+                replace("/professores/1");
               }}
               type="button"
             >

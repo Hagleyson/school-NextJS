@@ -181,7 +181,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 }
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { ["token"]: token } = parseCookies(ctx);
-  console.log("Okokokokokok");
 
   if (!token) {
     return {

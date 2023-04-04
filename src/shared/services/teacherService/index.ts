@@ -12,8 +12,10 @@ const teacherServices = (): ITeacherService => {
   ): Promise<IReturnListAllTeacher> {
     return http.get(urls.teacher.get(), filter);
   }
-
-  return { listAll };
+  async function listOne(secure_id: string) {
+    return http.get(urls.teacher.show(secure_id));
+  }
+  return { listAll, listOne };
 };
 
 export default teacherServices;

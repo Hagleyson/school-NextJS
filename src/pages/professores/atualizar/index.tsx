@@ -80,7 +80,7 @@ export default function Register() {
           <Grid item xs={2} md={1}>
             <Button
               handleClick={() => {
-                replace("/professores");
+                replace("/professores/1");
               }}
               type="button"
             >
@@ -95,6 +95,8 @@ export default function Register() {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const result = redirectPage(ctx);
+  const secure_id = ctx.query.secure_id;
+  console.log(secure_id);
 
   if (result) {
     return result;
