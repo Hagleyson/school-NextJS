@@ -7,6 +7,8 @@ export const toPascalCase = (url: string) => {
   });
 };
 
+const urlBase = ["professores", "cursos"];
+
 const BreadCrumb = ({ route }: { route: string }) => {
   const removeQuestionMark = route.replace(/\?/g, "/");
   const removeEquals = removeQuestionMark.replace(/\=/g, "/").split("/");
@@ -25,7 +27,10 @@ const BreadCrumb = ({ route }: { route: string }) => {
       return;
     }
     breadCrumb.push(
-      <LinkBreadCrumb key={idx} href={`/${element}`}>
+      <LinkBreadCrumb
+        key={idx}
+        href={`/${urlBase.includes(element) ? `${element}/1` : element}`}
+      >
         {toPascalCase(element)}
       </LinkBreadCrumb>
     );
