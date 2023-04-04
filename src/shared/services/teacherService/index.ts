@@ -4,6 +4,7 @@ import {
   IReturnListAllTeacher,
   ITeacherService,
   IFilterTeacher,
+  IReturnListOneTeacher,
 } from "./interface";
 
 const teacherServices = (): ITeacherService => {
@@ -12,7 +13,7 @@ const teacherServices = (): ITeacherService => {
   ): Promise<IReturnListAllTeacher> {
     return http.get(urls.teacher.get(), filter);
   }
-  async function listOne(secure_id: string) {
+  async function listOne(secure_id: string): Promise<IReturnListOneTeacher> {
     return http.get(urls.teacher.show(secure_id));
   }
   return { listAll, listOne };

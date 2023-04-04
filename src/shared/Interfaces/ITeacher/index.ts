@@ -15,3 +15,13 @@ export interface IListAllTeacher {
   meta: IMeta;
   data: ITeacher[];
 }
+
+export interface IListOneTeacher {
+  secure_id: string;
+  name: string;
+  last_name: string;
+  cpf: string;
+  training: string;
+  birth_date: string;
+  code: string;
+}

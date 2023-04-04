@@ -6,15 +6,23 @@ type propsType = {
   name: string;
   register: UseFormRegister<any>;
   error?: string;
+  isDisabled?: boolean;
 };
 
-export default function input({ label, name, register, error }: propsType) {
+export default function input({
+  label,
+  name,
+  register,
+  error,
+  isDisabled,
+}: propsType) {
   return (
     <InputStyled
       error={!!error}
       label={label}
       helperText={error}
       {...register(name)}
+      disabled={isDisabled}
     />
   );
 }

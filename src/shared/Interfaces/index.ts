@@ -6,7 +6,11 @@ import {
 
 import { IMeta } from "@/shared/Interfaces/IMeta";
 
-import { IListAllTeacher, ITeacher } from "@/shared/Interfaces/ITeacher/index";
+import {
+  IListAllTeacher,
+  ITeacher,
+  IListOneTeacher,
+} from "@/shared/Interfaces/ITeacher/index";
 
 export type {
   ILoggedUser,
@@ -15,4 +19,5 @@ export type {
   IMeta,
   IListAllTeacher,
   ITeacher,
+  IListOneTeacher,
 };

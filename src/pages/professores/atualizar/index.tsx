@@ -8,6 +8,12 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { redirectPage } from "@/shared/helpers";
+import { setContext } from "@/shared/lib";
+import { teacherServices } from "@/shared/services";
+import moment from "moment";
+import { IListOneTeacher } from "@/shared/Interfaces";
+import useLoading from "@/shared/hooks/useIsLoader";
+import { toast } from "react-toastify";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Campo obrigatório"),
@@ -17,18 +23,34 @@ const schema = Yup.object().shape({
   sex: Yup.string().required("Campo obrigatório"),
 });
 
-export default function Register() {
+export default function Register(props: IListOneTeacher) {
   const {
     handleSubmit,
     register,
+    setValue,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
+
+  const isLoading = useLoading();
 
   const { replace } = useRouter();
 
   async function submit(data: any): Promise<void> {
     console.log(data);
   }
+
+  React.useEffect(() => {
+    if (props.code && !isLoading) {
+      toast.warning("Dados não encontrado!");
+      replace("/professores/1");
+      return;
+    }
+    if (props) {
+      for (const key in props) {
+        setValue(key, props[key as keyof IListOneTeacher]);
+      }
+    }
+  }, [isLoading]);
 
   return (
     <>
@@ -71,6 +93,14 @@ export default function Register() {
               error={errors?.training?.message?.toString()}
             />
           </Grid>
+          <Grid item xs={12} md={6}>
+            <Input
+              label="Data de Nascimento"
+              name="birth_date"
+              register={register}
+              error={errors?.register?.message?.toString()}
+            />
+          </Grid>
         </Grid>
         <br />
         <Grid container spacing={2}>
@@ -95,14 +125,29 @@ export default function Register() {
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const result = redirectPage(ctx);
-  const secure_id = ctx.query.secure_id;
-  console.log(secure_id);
 
   if (result) {
     return result;
   }
 
+  setContext(ctx);
+
+  const { listOne } = teacherServices();
+
+  const secure_id = ctx.query.secure_id;
+
+  if (secure_id) {
+    const data = await listOne(secure_id.toString());
+
+    return {
+      props: {
+        ...data.data,
+        birth_date: moment(data.data.birth_date).utc().format("DD/MM/YYYY"),
+      },
+    };
+  }
+
   return {
-    props: {},
+    props: { data: {} },
   };
 };
