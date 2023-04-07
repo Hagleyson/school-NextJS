@@ -1,7 +1,7 @@
 import { FormStyled } from "./styled";
 
 type propsType = {
-  onSubmit: any;
+  onSubmit?: any;
   children: React.ReactNode;
 };
 
