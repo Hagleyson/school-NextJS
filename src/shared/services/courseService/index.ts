@@ -1,13 +1,14 @@
 import { urls } from "@/shared/constant";
 import { http } from "@/shared/lib";
 import {
+  ICourseService,
   IFilterListAllCourse,
   IReturnListAllCourse,
   IReturnListOneCourse,
 } from "./interface";
 import { ICreateOrUpdateCourse, IReturnCourse } from "@/shared/Interfaces";
 
-const courseServices = (): any => {
+const courseServices = (): ICourseService => {
   const { courses } = urls;
 
   async function listAll(
