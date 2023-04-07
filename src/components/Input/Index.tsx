@@ -24,8 +24,6 @@ export default function input({
       helperText={error}
       {...register(name)}
       disabled={isDisabled}
-    >
-      {/* <InputMask  /> */}
-    </InputStyled>
+    />
   );
 }

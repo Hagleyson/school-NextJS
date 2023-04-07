@@ -25,3 +25,11 @@ export interface IListOneTeacher {
   birth_date: string;
   code: string;
 }
+
+export interface ICreateOrUpdateTeacher {
+  name: string;
+  last_name: string;
+  cpf: string;
+  training: string;
+  birth_date: string;
+}
