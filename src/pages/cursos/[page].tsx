@@ -13,6 +13,26 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     return result;
   }
 
+  const { listAll: listAllService } = teacherServices();
+
+  const { params } = ctx;
+  const page = Number(params?.page) ?? 1;
+
+  setContext(ctx);
+
+  const { data } = await listAllService({
+    params: {
+      page,
+    },
+  });
+
+  return {
+    props: {
+      meta: data.meta,
+      data: data.data,
+    },
+  };
+
   return {
     props: {},
   };

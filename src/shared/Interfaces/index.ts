@@ -14,6 +14,13 @@ import {
   ITeacherReturn,
 } from "@/shared/Interfaces/ITeacher/index";
 
+import {
+  ICourse,
+  IReturnCourse,
+  IListAllCourse,
+  ICreateOrUpdateCourse,
+} from "@/shared/Interfaces/ICourse";
+
 export type {
   ILoggedUser,
   IUserResponse,
@@ -24,4 +31,8 @@ export type {
   IListOneTeacher,
   ICreateOrUpdateTeacher,
   ITeacherReturn,
+  ICourse,
+  IReturnCourse,
+  IListAllCourse,
+  ICreateOrUpdateCourse,
 };
