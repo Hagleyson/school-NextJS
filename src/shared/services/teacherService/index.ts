@@ -5,9 +5,8 @@ import {
   ITeacherService,
   IFilterTeacher,
   IReturnListOneTeacher,
-  IReturnCreateUpdateDelete,
 } from "./interface";
-import { ICreateOrUpdateTeacher } from "@/shared/Interfaces";
+import { ICreateOrUpdateTeacher, ITeacherReturn } from "@/shared/Interfaces";
 
 const teacherServices = (): ITeacherService => {
   async function listAll(
@@ -22,20 +21,18 @@ const teacherServices = (): ITeacherService => {
 
   async function register(
     data: ICreateOrUpdateTeacher
-  ): Promise<IReturnCreateUpdateDelete> {
+  ): Promise<ITeacherReturn> {
     return http.post(urls.teacher.post(), data);
   }
 
   async function update(
     secure_id: string,
     data: ICreateOrUpdateTeacher
-  ): Promise<IReturnCreateUpdateDelete> {
-    return http.post(urls.teacher.update(secure_id), data);
+  ): Promise<ITeacherReturn> {
+    return http.put(urls.teacher.update(secure_id), data);
   }
 
-  async function deleteTeacher(
-    secure_id: string
-  ): Promise<IReturnCreateUpdateDelete> {
+  async function deleteTeacher(secure_id: string): Promise<ITeacherReturn> {
     return http.delete(urls.teacher.delete(secure_id));
   }
 

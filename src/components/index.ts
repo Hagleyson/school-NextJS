@@ -8,3 +8,4 @@ export { default as Form } from "./Form/index";
 export { default as Button } from "./Button/index";
 export { default as CustomTableFooter } from "./CustomTableFooter/index";
 export { default as Loader } from "./Loader/index";
+export { default as Modal } from "./Modal/index";

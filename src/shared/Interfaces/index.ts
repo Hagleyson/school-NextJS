@@ -11,6 +11,7 @@ import {
   ITeacher,
   IListOneTeacher,
   ICreateOrUpdateTeacher,
+  ITeacherReturn,
 } from "@/shared/Interfaces/ITeacher/index";
 
 export type {
@@ -22,4 +23,5 @@ export type {
   ITeacher,
   IListOneTeacher,
   ICreateOrUpdateTeacher,
+  ITeacherReturn,
 };

@@ -8,26 +8,29 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { redirectPage } from "@/shared/helpers";
 import { GetServerSideProps } from "next";
+import { TeacherProvider, useTeacher } from "@/context/teacherContext";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Campo obrigatório"),
   last_name: Yup.string().required("Campo obrigatório"),
   cpf: Yup.string().required("Campo obrigatório"),
   training: Yup.string().required("Campo obrigatório"),
-  sex: Yup.string().required("Campo obrigatório"),
+  birth_date: Yup.string().required("Campo obrigatório"),
 });
 
-export default function Register() {
+function RegisterComponent() {
   const {
     handleSubmit,
     register,
     formState: { errors },
   } = useForm({ resolver: yupResolver(schema) });
 
+  const { register: registerTeacher } = useTeacher();
+
   const { replace } = useRouter();
 
   async function submit(data: any): Promise<void> {
-    console.log(data);
+    registerTeacher(data);
   }
 
   return (
@@ -71,6 +74,14 @@ export default function Register() {
               error={errors?.training?.message?.toString()}
             />
           </Grid>
+          <Grid item xs={12} md={6}>
+            <Input
+              label="Data de Nascimento"
+              name="birth_date"
+              register={register}
+              error={errors?.register?.message?.toString()}
+            />
+          </Grid>
         </Grid>
         <br />
         <Grid container spacing={2}>
@@ -92,6 +103,15 @@ export default function Register() {
     </>
   );
 }
+
+export default function Register() {
+  return (
+    <TeacherProvider>
+      <RegisterComponent />
+    </TeacherProvider>
+  );
+}
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const result = redirectPage(ctx);
 

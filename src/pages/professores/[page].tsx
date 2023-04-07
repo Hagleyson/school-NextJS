@@ -3,6 +3,7 @@ import {
   ButtonsActionsTable,
   CustomTableFooter,
   Loader,
+  Modal,
   Title,
 } from "@/components";
 import { useRouter } from "next/router";
@@ -29,23 +30,41 @@ import { IListAllTeacher } from "@/shared/Interfaces";
 import { setContext } from "@/shared/lib";
 import useLoading from "@/shared/hooks/useIsLoader";
 import moment from "moment";
+import { TeacherProvider, useTeacher } from "@/context/teacherContext";
 
-export default function Teacher({ meta, data: teachers }: IListAllTeacher) {
+function TeacherComponent({ meta, data: teachers }: IListAllTeacher) {
+  const [open, setOpen] = React.useState<{
+    secure_id: string;
+    isOpen: boolean;
+  }>({ secure_id: "", isOpen: false });
   const router = useRouter();
   const isLoading = useLoading();
+  const { deleteTeacher } = useTeacher();
 
   const handleRedirect = (type: string, secure_id?: string) => {
+    if (type === "delete" && secure_id) {
+      setOpen({ secure_id, isOpen: true });
+      return;
+    }
     router.push({
       pathname: `/professores/${translateUrl(type)}`,
       query: { secure_id, type },
     });
   };
 
-  const handleChange = (_: any, value: any) => {
+  const handleChangePage = (_: any, value: any) => {
     router.push({
       pathname: `/professores/${value}`,
     });
   };
+
+  const handleClose = () => setOpen({ secure_id: "", isOpen: false });
+
+  const handleDelete = React.useCallback(() => {
+    deleteTeacher(open.secure_id);
+
+    setOpen({ secure_id: "", isOpen: false });
+  }, [open.secure_id]);
 
   return (
     <>
@@ -98,12 +117,27 @@ export default function Teacher({ meta, data: teachers }: IListAllTeacher) {
             </TableBody>
           </Table>
 
-          <CustomTableFooter meta={meta} handleChange={handleChange} />
+          <CustomTableFooter meta={meta} handleChange={handleChangePage} />
         </TableContainer>
       )}
+      <Modal
+        text="Deseja Excluir Esse Professor?"
+        isOpen={open.isOpen}
+        handleClose={handleClose}
+        handleConfirm={handleDelete}
+      />
     </>
   );
 }
+
+export default function Teacher({ meta, data }: IListAllTeacher) {
+  return (
+    <TeacherProvider>
+      <TeacherComponent meta={meta} data={data} />
+    </TeacherProvider>
+  );
+}
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const result = redirectPage(ctx);
 

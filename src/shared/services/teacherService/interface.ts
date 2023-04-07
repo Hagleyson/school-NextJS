@@ -1,5 +1,9 @@
 import { ICreateOrUpdateTeacher } from "./../../Interfaces/ITeacher/index";
-import { IListAllTeacher, IListOneTeacher } from "@/shared/Interfaces/index";
+import {
+  IListAllTeacher,
+  IListOneTeacher,
+  ITeacherReturn,
+} from "@/shared/Interfaces/index";
 
 export interface IReturnListAllTeacher {
   data: IListAllTeacher;
@@ -14,18 +18,14 @@ export interface IFilterTeacher {
 export interface IReturnListOneTeacher {
   data: IListOneTeacher;
 }
-export interface IReturnCreateUpdateDelete {
-  status: number;
-}
+
 export interface ITeacherService {
   listAll: (filter: IFilterTeacher) => Promise<IReturnListAllTeacher>;
   listOne: (secure_id: string) => Promise<IReturnListOneTeacher>;
-  register: (
-    data: ICreateOrUpdateTeacher
-  ) => Promise<IReturnCreateUpdateDelete>;
+  register: (data: ICreateOrUpdateTeacher) => Promise<ITeacherReturn>;
   update: (
     secure_id: string,
     data: ICreateOrUpdateTeacher
-  ) => Promise<IReturnCreateUpdateDelete>;
-  deleteTeacher: (secure_id: string) => Promise<IReturnCreateUpdateDelete>;
+  ) => Promise<ITeacherReturn>;
+  deleteTeacher: (secure_id: string) => Promise<ITeacherReturn>;
 }

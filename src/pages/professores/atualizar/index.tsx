@@ -14,16 +14,17 @@ import moment from "moment";
 import { IListOneTeacher } from "@/shared/Interfaces";
 import useLoading from "@/shared/hooks/useIsLoader";
 import { toast } from "react-toastify";
+import { TeacherProvider, useTeacher } from "@/context/teacherContext";
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Campo obrigatório"),
   last_name: Yup.string().required("Campo obrigatório"),
   cpf: Yup.string().required("Campo obrigatório"),
   training: Yup.string().required("Campo obrigatório"),
-  sex: Yup.string().required("Campo obrigatório"),
+  birth_date: Yup.string().required("Campo obrigatório"),
 });
 
-export default function Register(props: IListOneTeacher) {
+function UpdateComponent({ data }: { data: IListOneTeacher }) {
   const {
     handleSubmit,
     register,
@@ -32,28 +33,29 @@ export default function Register(props: IListOneTeacher) {
   } = useForm({ resolver: yupResolver(schema) });
 
   const isLoading = useLoading();
+  const { update: updateTeacher } = useTeacher();
 
   const { replace } = useRouter();
 
   async function submit(data: any): Promise<void> {
-    console.log(data);
+    updateTeacher(data.secure_id, data);
   }
 
   React.useEffect(() => {
-    if (props.code && !isLoading) {
+    if (data.code && !isLoading) {
       toast.warning("Dados não encontrado!");
       replace("/professores/1");
       return;
     }
-    if (props) {
-      for (const key in props) {
-        setValue(key, props[key as keyof IListOneTeacher]);
+    if (data) {
+      for (const key in data) {
+        setValue(key, data[key as keyof IListOneTeacher]);
       }
     }
   }, [isLoading]);
 
   return (
-    <>
+    <TeacherProvider>
       <BoxTitle>
         <Title>Atualização de Professores</Title>
       </BoxTitle>
@@ -119,7 +121,15 @@ export default function Register(props: IListOneTeacher) {
           </Grid>
         </Grid>
       </Form>
-    </>
+    </TeacherProvider>
+  );
+}
+
+export default function Register(props: IListOneTeacher) {
+  return (
+    <TeacherProvider>
+      <UpdateComponent data={props} />
+    </TeacherProvider>
   );
 }
 

@@ -22,8 +22,8 @@ export default function input({
       error={!!error}
       label={label}
       helperText={error}
-      {...register(name)}
       disabled={isDisabled}
+      {...register(name)}
     />
   );
 }

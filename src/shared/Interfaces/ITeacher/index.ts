@@ -33,3 +33,11 @@ export interface ICreateOrUpdateTeacher {
   training: string;
   birth_date: string;
 }
+export interface ITeacherReturn {
+  status: number;
+  data: {
+    message: string;
+    code: string;
+    stack: string;
+  };
+}
