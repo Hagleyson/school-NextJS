@@ -11,3 +11,4 @@ export { default as Loader } from "./Loader/index";
 export { default as Modal } from "./Modal/index";
 export { default as StatusTag } from "./StatusTag/index";
 export { default as Select } from "./Select/Index";
+export { default as TesteInput } from "./MaskedInput/Index";
