@@ -36,6 +36,19 @@ const courseServices = (): ICourseService => {
     return http.delete(courses.delete(secure_id));
   }
 
-  return { listAll, listOne, register, update, deleteCourse };
+  async function activateOrDeactivate(
+    secure_id: string
+  ): Promise<IReturnCourse> {
+    return http.patch(courses.patch(secure_id));
+  }
+
+  return {
+    listAll,
+    listOne,
+    register,
+    update,
+    deleteCourse,
+    activateOrDeactivate,
+  };
 };
 export default courseServices;

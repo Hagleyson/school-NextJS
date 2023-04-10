@@ -27,4 +27,5 @@ export interface ICourseService {
     data: ICreateOrUpdateCourse
   ) => Promise<IReturnCourse>;
   deleteCourse: (secure_id: string) => Promise<IReturnCourse>;
+  activateOrDeactivate: (secure_id: string) => Promise<IReturnCourse>;
 }

@@ -7,4 +7,5 @@ export interface ICourseContext {
     dataTeacher: ICreateOrUpdateCourse
   ) => Promise<void>;
   deleteCourse: (secure_id: string) => Promise<void>;
+  activateOrDeactivate: (secure_id: string) => Promise<void>;
 }

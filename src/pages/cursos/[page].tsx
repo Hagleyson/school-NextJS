@@ -23,7 +23,9 @@ import {
   TableHead,
   TableRow,
   Button,
+  Tooltip,
 } from "@mui/material";
+import FactCheckIcon from "@mui/icons-material/FactCheck";
 import useLoading from "@/shared/hooks/useIsLoader";
 import { CourseProvider, useCourse } from "@/context/courseContext";
 
@@ -32,11 +34,16 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
 
   const isLoading = useLoading();
 
-  const { deleteCourse } = useCourse();
+  const { deleteCourse, activateOrDeactivate } = useCourse();
   const [open, setOpen] = React.useState<{
     secure_id: string;
     isOpen: boolean;
   }>({ secure_id: "", isOpen: false });
+  const [currentCourse, setCurrentCourse] = React.useState<{
+    secure_id: string;
+    isOpen: boolean;
+    status: string;
+  }>({ secure_id: "", isOpen: false, status: "" });
 
   const handleRedirect = (type: string, secure_id?: string) => {
     if (type === "delete" && secure_id) {
@@ -59,9 +66,13 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
 
   const handleDelete = React.useCallback(() => {
     deleteCourse(open.secure_id);
-
     setOpen({ secure_id: "", isOpen: false });
   }, [open.secure_id]);
+
+  const handleActivateOrDeactivate = React.useCallback(() => {
+    activateOrDeactivate(currentCourse.secure_id);
+    setCurrentCourse({ isOpen: true, secure_id: "", status: "" });
+  }, [currentCourse.isOpen]);
 
   return (
     <>
@@ -98,12 +109,27 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
                   <TableCell align="right">{row.teacher.name}</TableCell>
                   <TableCell align="right">{row.status}</TableCell>
 
-                  <TableCell align="right" width={140}>
+                  <TableCell align="right" width={180}>
                     <ButtonsActionsTable
                       key={row.secure_id}
                       secure_id={row.secure_id}
                       handleClick={handleRedirect}
-                    />
+                    >
+                      <Tooltip
+                        title="Ativar/Desativar"
+                        style={{ marginLeft: "10px", cursor: "pointer" }}
+                      >
+                        <FactCheckIcon
+                          onClick={() => {
+                            setCurrentCourse({
+                              secure_id: row.secure_id,
+                              status: row.status,
+                              isOpen: true,
+                            });
+                          }}
+                        />
+                      </Tooltip>
+                    </ButtonsActionsTable>
                   </TableCell>
                 </TableRow>
               ))}
@@ -117,6 +143,14 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
         isOpen={open.isOpen}
         handleClose={handleClose}
         handleConfirm={handleDelete}
+      />
+      <Modal
+        text="Deseja Mudar o Status desse curso?"
+        isOpen={currentCourse.isOpen}
+        handleClose={() => {
+          setCurrentCourse({ secure_id: "", status: "", isOpen: false });
+        }}
+        handleConfirm={handleActivateOrDeactivate}
       />
     </>
   );

@@ -21,6 +21,7 @@ export const urls = {
     get: (): string => `/courses/`,
     show: (secure_id: string): string => `/courses/${secure_id}`,
     post: (): string => `/courses`,
+    patch: (secure_id: string): string => `/course_disable/${secure_id}`,
     delete: (secure_id: string): string => `/courses/${secure_id}`,
     update: (secure_id: string): string => `/courses/${secure_id}`,
   },

@@ -17,6 +17,7 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
     register: registerService,
     update: updateService,
     deleteCourse: deleteService,
+    activateOrDeactivate: activateOrDeactivateService,
   } = courseServices();
 
   async function register(dataTeacher: ICreateOrUpdateCourse) {
@@ -24,7 +25,7 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
       const response = await registerService(dataTeacher);
       if (response.status === 200) {
         toast.success("Professor cadastrado com sucesso!");
-        replace("/professores/1");
+        replace("/curso/1");
         return;
       }
       throw new Error();
@@ -38,7 +39,7 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
       const response = await updateService(secure_id, dataTeacher);
       if (response.status === 201) {
         toast.success("Professor atualizado com sucesso!");
-        replace("/professores/1");
+        replace("/curso/1");
         return;
       }
       throw new Error();
@@ -53,7 +54,7 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
 
       if (status === 200) {
         toast.success("Professor deletado com sucesso!");
-        replace("/professores/1");
+        replace("/curso/1");
         return;
       }
       throw { error: data.code };
@@ -62,8 +63,23 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
     }
   }
 
+  async function activateOrDeactivate(secure_id: string) {
+    try {
+      const { status, data } = await activateOrDeactivateService(secure_id);
+      if (status === 200) {
+        toast.success("Status do curso atualizado com sucesso!");
+        replace("/curso/1");
+      }
+      throw { error: data.code };
+    } catch (error: any) {
+      toast.error("Ocorreu um erro ao atualizar status");
+    }
+  }
+
   return (
-    <Course.Provider value={{ deleteCourse, register, update }}>
+    <Course.Provider
+      value={{ deleteCourse, register, update, activateOrDeactivate }}
+    >
       {children}
     </Course.Provider>
   );
