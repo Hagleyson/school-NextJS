@@ -3,6 +3,7 @@ import {
   IListAllTeacher,
   IListOneTeacher,
   ITeacherReturn,
+  ITeacher,
 } from "@/shared/Interfaces/index";
 
 export interface IReturnListAllTeacher {
