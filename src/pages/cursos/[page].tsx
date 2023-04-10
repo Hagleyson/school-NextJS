@@ -1,6 +1,6 @@
 import * as React from "react";
 import { GetServerSideProps } from "next";
-import { redirectPage, translateUrl } from "@/shared/helpers";
+import { redirectPage, translateStatus, translateUrl } from "@/shared/helpers";
 import { courseServices } from "@/shared/services";
 import { setContext } from "@/shared/lib";
 import { IListAllCourse } from "@/shared/Interfaces";
@@ -10,6 +10,7 @@ import {
   CustomTableFooter,
   Loader,
   Modal,
+  StatusTag,
   Title,
 } from "@/components";
 import { useRouter } from "next/router";
@@ -71,13 +72,13 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
 
   const handleActivateOrDeactivate = React.useCallback(() => {
     activateOrDeactivate(currentCourse.secure_id);
-    setCurrentCourse({ isOpen: true, secure_id: "", status: "" });
+    setCurrentCourse({ isOpen: false, secure_id: "", status: "" });
   }, [currentCourse.isOpen]);
 
   return (
     <>
       <BoxTitle>
-        <Title>Lista de Professores</Title>
+        <Title>Lista de Cursos</Title>
         <Button variant="contained" onClick={() => handleRedirect("register")}>
           Cadastrar
         </Button>
@@ -91,9 +92,10 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
             <TableHead>
               <TableRow>
                 <TableCell>Nome</TableCell>
-                <TableCell align="right">Publico Alvo</TableCell>
+                <TableCell align="right">Público Alvo</TableCell>
                 <TableCell align="right">Professor</TableCell>
                 <TableCell align="right">Status</TableCell>
+                <TableCell align="right">Ação</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -107,7 +109,11 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
                   </TableCell>
                   <TableCell align="right">{row.target_audience}</TableCell>
                   <TableCell align="right">{row.teacher.name}</TableCell>
-                  <TableCell align="right">{row.status}</TableCell>
+                  <TableCell align="right" width={120}>
+                    <StatusTag status={translateStatus("courses", row.status)}>
+                      {translateStatus("courses", row.status)}
+                    </StatusTag>
+                  </TableCell>
 
                   <TableCell align="right" width={180}>
                     <ButtonsActionsTable

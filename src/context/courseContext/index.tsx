@@ -9,6 +9,7 @@ import { courseServices } from "@/shared/services/index";
 import { ICourseContext } from "./interface";
 
 export const Course = createContext({} as ICourseContext);
+const homePath = "/cursos/1";
 
 export function CourseProvider({ children }: { children: React.ReactNode }) {
   const { replace } = useRouter();
@@ -25,7 +26,7 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
       const response = await registerService(dataTeacher);
       if (response.status === 200) {
         toast.success("Professor cadastrado com sucesso!");
-        replace("/curso/1");
+        replace(homePath);
         return;
       }
       throw new Error();
@@ -39,7 +40,7 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
       const response = await updateService(secure_id, dataTeacher);
       if (response.status === 201) {
         toast.success("Professor atualizado com sucesso!");
-        replace("/curso/1");
+        replace(homePath);
         return;
       }
       throw new Error();
@@ -54,7 +55,7 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
 
       if (status === 200) {
         toast.success("Professor deletado com sucesso!");
-        replace("/curso/1");
+        replace(homePath);
         return;
       }
       throw { error: data.code };
@@ -66,9 +67,10 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
   async function activateOrDeactivate(secure_id: string) {
     try {
       const { status, data } = await activateOrDeactivateService(secure_id);
-      if (status === 200) {
+      if (status === 201) {
         toast.success("Status do curso atualizado com sucesso!");
-        replace("/curso/1");
+        replace(homePath);
+        return;
       }
       throw { error: data.code };
     } catch (error: any) {
