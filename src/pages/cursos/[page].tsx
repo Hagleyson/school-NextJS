@@ -92,10 +92,10 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
             <TableHead>
               <TableRow>
                 <TableCell>Nome</TableCell>
-                <TableCell align="right">Público Alvo</TableCell>
-                <TableCell align="right">Professor</TableCell>
-                <TableCell align="right">Status</TableCell>
-                <TableCell align="right">Ação</TableCell>
+                <TableCell>Público Alvo</TableCell>
+                <TableCell>Professor</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Ação</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -107,15 +107,15 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
                   <TableCell component="th" scope="row">
                     {row.name}
                   </TableCell>
-                  <TableCell align="right">{row.target_audience}</TableCell>
-                  <TableCell align="right">{row.teacher.name}</TableCell>
-                  <TableCell align="right" width={120}>
+                  <TableCell>{row.target_audience}</TableCell>
+                  <TableCell>{row.teacher.name}</TableCell>
+                  <TableCell width={120}>
                     <StatusTag status={translateStatus("courses", row.status)}>
                       {translateStatus("courses", row.status)}
                     </StatusTag>
                   </TableCell>
 
-                  <TableCell align="right" width={180}>
+                  <TableCell align="justify" width={180}>
                     <ButtonsActionsTable
                       key={row.secure_id}
                       secure_id={row.secure_id}
@@ -151,7 +151,9 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
         handleConfirm={handleDelete}
       />
       <Modal
-        text="Deseja Mudar o Status desse curso?"
+        text={`Deseja alterar o status desse curso para ${
+          currentCourse.status === "active" ? "inativo" : "ativo"
+        }?`}
         isOpen={currentCourse.isOpen}
         handleClose={() => {
           setCurrentCourse({ secure_id: "", status: "", isOpen: false });

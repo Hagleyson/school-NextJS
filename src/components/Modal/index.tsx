@@ -25,7 +25,9 @@ export default function Modal({
       >
         <>
           <Box>
-            <Typography sx={{ fontSize: "1.2rem" }}>{text}</Typography>
+            <Typography sx={{ fontSize: "1.2rem", textAlign: "center" }}>
+              {text}
+            </Typography>
             <ContainerButtons>
               <Button type="button" handleClick={handleConfirm}>
                 Sim{" "}

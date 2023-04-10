@@ -21,31 +21,31 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
     activateOrDeactivate: activateOrDeactivateService,
   } = courseServices();
 
-  async function register(dataTeacher: ICreateOrUpdateCourse) {
+  async function register(dataCourse: ICreateOrUpdateCourse) {
     try {
-      const response = await registerService(dataTeacher);
+      const response = await registerService(dataCourse);
       if (response.status === 200) {
-        toast.success("Professor cadastrado com sucesso!");
+        toast.success("Curso cadastrado com sucesso!");
         replace(homePath);
         return;
       }
       throw new Error();
     } catch {
-      toast.error("Ocorreu um erro ao cadastrar esse professor!");
+      toast.error("Ocorreu um erro ao cadastrar esse Curso!");
     }
   }
 
-  async function update(secure_id: string, dataTeacher: ICreateOrUpdateCourse) {
+  async function update(secure_id: string, dataCourse: ICreateOrUpdateCourse) {
     try {
-      const response = await updateService(secure_id, dataTeacher);
+      const response = await updateService(secure_id, dataCourse);
       if (response.status === 201) {
-        toast.success("Professor atualizado com sucesso!");
+        toast.success("Curso atualizado com sucesso!");
         replace(homePath);
         return;
       }
       throw new Error();
     } catch {
-      toast.error("Ocorreu um erro ao atualizar esse professor!");
+      toast.error("Ocorreu um erro ao atualizar esse Curso!");
     }
   }
 
@@ -54,7 +54,7 @@ export function CourseProvider({ children }: { children: React.ReactNode }) {
       const { status, data } = await deleteService(secure_id);
 
       if (status === 200) {
-        toast.success("Professor deletado com sucesso!");
+        toast.success("Curso deletado com sucesso!");
         replace(homePath);
         return;
       }

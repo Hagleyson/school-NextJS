@@ -83,11 +83,11 @@ function TeacherComponent({ meta, data: teachers }: IListAllTeacher) {
             <TableHead>
               <TableRow>
                 <TableCell>Nome</TableCell>
-                <TableCell align="right">Sobrenome</TableCell>
-                <TableCell align="right">CPF</TableCell>
-                <TableCell align="right">Curso</TableCell>
-                <TableCell align="right">Data de Nascimento</TableCell>
-                <TableCell align="right">Ação</TableCell>
+                <TableCell>Sobrenome</TableCell>
+                <TableCell>CPF</TableCell>
+                <TableCell>Curso</TableCell>
+                <TableCell>Data de Nascimento</TableCell>
+                <TableCell>Ação</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -99,13 +99,13 @@ function TeacherComponent({ meta, data: teachers }: IListAllTeacher) {
                   <TableCell component="th" scope="row">
                     {row.name}
                   </TableCell>
-                  <TableCell align="right">{row.last_name}</TableCell>
-                  <TableCell align="right">{formatCPF(row.cpf)}</TableCell>
-                  <TableCell align="right">{row.training}</TableCell>
-                  <TableCell align="right">
+                  <TableCell>{row.last_name}</TableCell>
+                  <TableCell>{formatCPF(row.cpf)}</TableCell>
+                  <TableCell>{row.training}</TableCell>
+                  <TableCell>
                     {moment(row.birth_date).utc().format("DD/MM/YYYY")}
                   </TableCell>
-                  <TableCell align="right" width={140}>
+                  <TableCell align="justify" width={140}>
                     <ButtonsActionsTable
                       key={row.secure_id}
                       secure_id={row.secure_id}

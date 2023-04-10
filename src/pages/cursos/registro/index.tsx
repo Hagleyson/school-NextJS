@@ -15,90 +15,103 @@ import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { redirectPage } from "@/shared/helpers";
 import { setContext } from "@/shared/lib";
-import { courseServices } from "@/shared/services";
-import { IListOneTeacher } from "@/shared/Interfaces";
+import { teacherServices } from "@/shared/services";
 import useLoading from "@/shared/hooks/useIsLoader";
-import { toast } from "react-toastify";
+import { IListAllTeacher, ITeacher } from "@/shared/Interfaces";
+import { CourseProvider, useCourse } from "@/context/courseContext";
+import * as Yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
 
-export default function Register(props: IListOneTeacher) {
-  const { register, setValue } = useForm();
+const schema = Yup.object().shape({
+  teacher_secure_id: Yup.string().required("Campo obrigatório"),
+  name: Yup.string().required("Campo obrigatório"),
+  content: Yup.string().required("Campo obrigatório"),
+  target_audience: Yup.string().required("Campo obrigatório"),
+});
+
+function Register({ data }: { data: ITeacher[] }) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(schema) });
 
   const isLoading = useLoading();
 
   const { replace } = useRouter();
 
-  const [age, setAge] = React.useState("");
+  const { register: registerCourse } = useCourse();
 
-  const handleChange = (event: any) => {
-    setAge(event.target.value);
-  };
-
-  React.useEffect(() => {
-    if (props.code && !isLoading) {
-      toast.warning("Dados não encontrado!");
-      replace("/cursos/1");
-      return;
-    }
-    if (props) {
-      for (const key in props) {
-        setValue(key, props[key as keyof IListOneTeacher]);
-      }
-    }
-  }, [isLoading]);
+  async function submit(data: any): Promise<void> {
+    registerCourse(data);
+  }
 
   return (
     <>
       <BoxTitle>
-        <Title>Dados do Professores</Title>
+        <Title>Cadastro de Curso</Title>
       </BoxTitle>
       <Divider />
       {isLoading ? (
         <Loader />
       ) : (
-        <Form>
+        <Form onSubmit={handleSubmit(submit)}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
-              <Input label="Nome" name="name" register={register} isDisabled />
+              <Input
+                label="Nome"
+                name="name"
+                register={register}
+                error={errors?.name?.message?.toString()}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Select
+                label="Professor"
+                name="teacher_secure_id"
+                register={register}
+                error={errors?.teacher_secure_id?.message?.toString()}
+              >
+                {data.length > 0 ? (
+                  data.map((currentData) => (
+                    <MenuItem
+                      key={currentData.secure_id}
+                      value={currentData.secure_id}
+                    >
+                      {currentData.name}
+                    </MenuItem>
+                  ))
+                ) : (
+                  <MenuItem value={""} disabled>
+                    Não Tem Professores Cadastrado!
+                  </MenuItem>
+                )}
+              </Select>
             </Grid>
             <Grid item xs={12} md={6}>
               <Input
                 label="Público alvo"
                 name="target_audience"
                 register={register}
-                isDisabled
+                error={errors?.target_audience?.message?.toString()}
               />
             </Grid>
 
-            {/* <Grid item xs={12} md={6}>
-              <Input
-                label="Professor"
-                name="teacher_secure_id"
-                register={register}
-                isDisabled
-              />
-            </Grid> */}
             <Grid item xs={12} md={6}>
               <Input
                 label="Conteúdo"
                 name="content"
                 register={register}
-                isDisabled
+                error={errors?.target_audience?.message?.toString()}
               />
             </Grid>
-            <Grid item xs={12} md={6}>
-              <Select
-                label="Conteúdo"
-                name="teacher_secure_id"
-                register={register}
-              >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
-              </Select>
-            </Grid>
           </Grid>
+
           <br />
           <Grid container spacing={2}>
+            <Grid item xs={2} md={1}>
+              <Button type="submit">Enviar</Button>
+            </Grid>
             <Grid item xs={2} md={1}>
               <Button
                 handleClick={() => {
@@ -115,6 +128,15 @@ export default function Register(props: IListOneTeacher) {
     </>
   );
 }
+
+export default function RegisterCourse({ data }: IListAllTeacher) {
+  return (
+    <CourseProvider>
+      <Register data={data} />
+    </CourseProvider>
+  );
+}
+
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const result = redirectPage(ctx);
 
@@ -124,22 +146,11 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   setContext(ctx);
 
-  const { listOne } = courseServices();
+  const { listAll } = teacherServices();
 
-  const secure_id = ctx.query.secure_id;
-
-  if (secure_id) {
-    const data = await listOne(secure_id.toString());
-
-    return {
-      props: {
-        ...data.data,
-        teacher_secure_id: data.data.teacher.name,
-      },
-    };
-  }
+  const { data } = await listAll({ params: { noPaginate: true } });
 
   return {
-    props: { data: {} },
+    props: { data: data ?? [] },
   };
 };

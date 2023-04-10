@@ -1,6 +1,5 @@
 import { InputStyled } from "./styled";
 import { UseFormRegister } from "react-hook-form";
-import InputMask from "react-input-mask";
 
 type propsType = {
   label: string;

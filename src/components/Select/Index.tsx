@@ -1,6 +1,6 @@
-import { InputStyled } from "./styled";
+import { FormControl, InputLabel } from "@mui/material";
+import { ErrorText, InputStyled } from "./styled";
 import { UseFormRegister } from "react-hook-form";
-import InputMask from "react-input-mask";
 
 type propsType = {
   label: string;
@@ -20,13 +20,18 @@ export default function Select({
   children,
 }: propsType) {
   return (
-    <InputStyled
-      error={!!error}
-      label={label}
-      disabled={isDisabled}
-      {...register(name)}
-    >
-      {children}
-    </InputStyled>
+    <FormControl fullWidth>
+      <InputLabel id="demo-simple-select-label">{label}</InputLabel>
+
+      <InputStyled
+        error={!!error}
+        label={label}
+        disabled={isDisabled}
+        {...register(name)}
+      >
+        {children}
+      </InputStyled>
+      <ErrorText>{error}</ErrorText>
+    </FormControl>
   );
 }

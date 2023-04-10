@@ -12,7 +12,8 @@ export interface IReturnListAllTeacher {
 
 export interface IFilterTeacher {
   params: {
-    page: number;
+    page?: number;
+    noPaginate?: boolean;
   };
 }
 export interface IReturnListOneTeacher {
