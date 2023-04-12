@@ -11,7 +11,7 @@ import {
   Loader,
   Modal,
   StatusTag,
-  TesteInput,
+  MaskInput,
   Title,
 } from "@/components";
 import { useRouter } from "next/router";
@@ -145,7 +145,7 @@ function CoursesComponente({ meta, data: courses }: IListAllCourse) {
           <CustomTableFooter meta={meta} handleChange={handleChangePage} />
         </TableContainer>
       )}
-      <TesteInput />
+      <MaskInput />
       <Modal
         text="Deseja Excluir Esse Curso?"
         isOpen={open.isOpen}
