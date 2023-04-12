@@ -1,5 +1,5 @@
 import * as React from "react";
-import { BoxTitle, Button, Form, Input, Title } from "@/components";
+import { BoxTitle, Button, Form, Input, MaskInput, Title } from "@/components";
 import { Divider, Grid } from "@mui/material";
 
 import * as Yup from "yup";
@@ -59,7 +59,7 @@ function RegisterComponent() {
           </Grid>
 
           <Grid item xs={12} md={6}>
-            <Input
+            <MaskInput
               label="Cpf"
               name="cpf"
               register={register}
@@ -75,11 +75,11 @@ function RegisterComponent() {
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <Input
+            <MaskInput
               label="Data de Nascimento"
               name="birth_date"
               register={register}
-              error={errors?.register?.message?.toString()}
+              error={errors?.birth_date?.message?.toString()}
             />
           </Grid>
         </Grid>
