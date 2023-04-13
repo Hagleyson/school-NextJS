@@ -1,6 +1,14 @@
 import * as React from "react";
-import { BoxTitle, Button, Form, Input, Title } from "@/components";
-import { Divider, Grid } from "@mui/material";
+import {
+  BoxTitle,
+  Button,
+  Form,
+  Input,
+  MaskInput,
+  Select,
+  Title,
+} from "@/components";
+import { Divider, Grid, MenuItem } from "@mui/material";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -16,45 +24,27 @@ import useLoading from "@/shared/hooks/useIsLoader";
 import { toast } from "react-toastify";
 import { TeacherProvider, useTeacher } from "@/context/teacherContext";
 
-const schema = Yup.object().shape({
-  name: Yup.string().required("Campo obrigatório"),
-  last_name: Yup.string().required("Campo obrigatório"),
-  cpf: Yup.string().required("Campo obrigatório"),
-  training: Yup.string().required("Campo obrigatório"),
-  birth_date: Yup.string().required("Campo obrigatório"),
-  email: Yup.string()
-    .email("Digite um E-mail valido")
-    .required("Campo obrigatório"),
-  alternative_email: Yup.string()
-    .email("Digite um E-mail valido")
-    .required("Campo obrigatório"),
-  rg: Yup.string().required("Campo obrigatório"),
-  gender: Yup.string().required("Campo obrigatório"),
-  naturalness: Yup.string().required("Campo obrigatório"),
-  scholarship: Yup.string().required("Campo obrigatório"),
-  phone: Yup.string().required("Campo obrigatório"),
-  alternative_phone: Yup.string().required("Campo obrigatório"),
-  street: Yup.string().required("Campo obrigatório"),
-  number: Yup.string().required("Campo obrigatório"),
-  neighborhood: Yup.string().required("Campo obrigatório"),
-  complement: Yup.string().optional(),
-});
-
 function UpdateComponent({ data }: { data: IListOneTeacher }) {
+  const {
+    update: updateTeacher,
+    validationSchema,
+    formattedValue,
+  } = useTeacher();
   const {
     handleSubmit,
     register,
     setValue,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: yupResolver(validationSchema) });
+  const [gender, setGender] = React.useState<string>("");
 
   const isLoading = useLoading();
-  const { update: updateTeacher } = useTeacher();
 
   const { replace } = useRouter();
 
   async function submit(data: any): Promise<void> {
-    updateTeacher(data.secure_id, data);
+    const value = formattedValue(data);
+    updateTeacher(data.secure_id, value);
   }
 
   React.useEffect(() => {
@@ -65,6 +55,16 @@ function UpdateComponent({ data }: { data: IListOneTeacher }) {
     }
     if (data) {
       for (const key in data) {
+        if (key === "gender") {
+          setGender(data["gender"]);
+        }
+        if (key === "address") {
+          const { address } = data;
+          setValue("street", address.street);
+          setValue("number", address.number);
+          setValue("neighborhood", address.neighborhood);
+          setValue("complement", address.complement);
+        }
         setValue(key, data[key as keyof IListOneTeacher]);
       }
     }
@@ -78,7 +78,7 @@ function UpdateComponent({ data }: { data: IListOneTeacher }) {
       <Divider />
       <Form onSubmit={handleSubmit(submit)}>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
             <Input
               label="Nome"
               name="name"
@@ -86,7 +86,7 @@ function UpdateComponent({ data }: { data: IListOneTeacher }) {
               error={errors?.name?.message?.toString()}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
             <Input
               label="Sobrenome"
               name="last_name"
@@ -95,15 +95,16 @@ function UpdateComponent({ data }: { data: IListOneTeacher }) {
             />
           </Grid>
 
-          <Grid item xs={12} md={6}>
-            <Input
+          <Grid item xs={12} md={4}>
+            <MaskInput
               label="Cpf"
               name="cpf"
               register={register}
               error={errors?.cpf?.message?.toString()}
+              isDisabled={false}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
             <Input
               label="Profissão"
               name="training"
@@ -111,12 +112,118 @@ function UpdateComponent({ data }: { data: IListOneTeacher }) {
               error={errors?.training?.message?.toString()}
             />
           </Grid>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={4}>
             <Input
               label="Data de Nascimento"
               name="birth_date"
               register={register}
               error={errors?.register?.message?.toString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Input
+              label="E-mail"
+              name="email"
+              register={register}
+              error={errors?.email?.message?.toString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Input
+              label="E-mail Alternativo"
+              name="alternative_email"
+              register={register}
+              error={errors?.alternative_email?.message?.toString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Input
+              label="Rg"
+              name="rg"
+              register={register}
+              error={errors?.rg?.message?.toString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Select
+              label="Genêro"
+              name="gender"
+              value={gender}
+              handleChange={(e) => setGender(e.target.value)}
+              register={register}
+              error={errors?.gender?.message?.toString()}
+            >
+              <MenuItem value={"masculino"}>Masculino</MenuItem>
+              <MenuItem value={"feminino"}>Feminino</MenuItem>
+            </Select>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Input
+              label="Naturalidade"
+              name="naturalness"
+              register={register}
+              error={errors?.naturalness?.message?.toString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Input
+              label="Escolaridade"
+              name="scholarship"
+              register={register}
+              error={errors?.scholarship?.message?.toString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <MaskInput
+              label="Telefone"
+              name="phone"
+              register={register}
+              error={errors?.phone?.message?.toString()}
+              isDisabled={false}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <MaskInput
+              label="Telefone Alternativo"
+              name="alternative_phone"
+              register={register}
+              error={errors?.phone?.message?.toString()}
+              isDisabled={false}
+            />
+          </Grid>
+        </Grid>
+        <p>Endereço</p>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={4}>
+            <Input
+              label="Rua"
+              name="street"
+              register={register}
+              error={errors?.street?.message?.toString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Input
+              label="Número"
+              name="number"
+              register={register}
+              error={errors?.number?.message?.toString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Input
+              label="Bairro"
+              name="neighborhood"
+              register={register}
+              error={errors?.neighborhood?.message?.toString()}
+            />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Input
+              label="Complemento"
+              name="complement"
+              register={register}
+              error={errors?.complement?.message?.toString()}
             />
           </Grid>
         </Grid>

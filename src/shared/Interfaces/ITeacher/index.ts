@@ -37,7 +37,21 @@ export interface IListOneTeacher {
   cpf: string;
   training: string;
   birth_date: string;
+  email: string;
+  alternative_email: string;
+  rg: string;
+  gender: string;
+  naturalness: string;
+  scholarship: string;
+  phone: string;
+  alternative_phone: string;
   code: string;
+  address: {
+    street: string;
+    number: string;
+    neighborhood: string;
+    complement: string;
+  };
 }
 
 export interface ICreateOrUpdateTeacher {
@@ -55,17 +69,15 @@ export interface ICreateOrUpdateTeacher {
   phone: string;
   alternative_phone: string;
   address: {
-    street: string;
-    number: string;
-    neighborhood: string;
-    complement: string;
+    street?: string;
+    number?: string;
+    neighborhood?: string;
+    complement?: string;
   };
 }
 export interface ITeacherReturn {
   status: number;
   data: {
-    message: string;
-    code: string;
-    stack: string;
+    [key: string]: string[];
   };
 }

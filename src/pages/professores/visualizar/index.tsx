@@ -1,6 +1,15 @@
 import * as React from "react";
-import { BoxTitle, Button, Form, Input, Loader, Title } from "@/components";
-import { Divider, Grid } from "@mui/material";
+import {
+  BoxTitle,
+  Button,
+  Form,
+  Input,
+  Loader,
+  MaskInput,
+  Select,
+  Title,
+} from "@/components";
+import { Divider, Grid, MenuItem } from "@mui/material";
 
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -14,22 +23,17 @@ import { IListOneTeacher } from "@/shared/Interfaces";
 import useLoading from "@/shared/hooks/useIsLoader";
 import { toast } from "react-toastify";
 import moment from "moment";
-
-const schema = Yup.object().shape({
-  name: Yup.string().required("Campo obrigatório"),
-  last_name: Yup.string().required("Campo obrigatório"),
-  cpf: Yup.string().required("Campo obrigatório"),
-  training: Yup.string().required("Campo obrigatório"),
-  sex: Yup.string().required("Campo obrigatório"),
-});
+import { useTeacher } from "@/context/teacherContext";
 
 export default function Register(props: IListOneTeacher) {
+  const { validationSchema } = useTeacher();
   const {
     handleSubmit,
     register,
     setValue,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
+  } = useForm({ resolver: yupResolver(validationSchema) });
+  const [gender, setGender] = React.useState<string>("");
 
   const isLoading = useLoading();
 
@@ -48,6 +52,16 @@ export default function Register(props: IListOneTeacher) {
     if (props) {
       for (const key in props) {
         setValue(key, props[key as keyof IListOneTeacher]);
+        if (key === "gender") {
+          setGender(props["gender"]);
+        }
+        if (key === "address") {
+          const { address } = props;
+          setValue("street", address.street);
+          setValue("number", address.number);
+          setValue("neighborhood", address.neighborhood);
+          setValue("complement", address.complement);
+        }
       }
     }
   }, [isLoading]);
@@ -63,7 +77,7 @@ export default function Register(props: IListOneTeacher) {
       ) : (
         <Form onSubmit={handleSubmit(submit)}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Input
                 label="Nome"
                 name="name"
@@ -72,7 +86,7 @@ export default function Register(props: IListOneTeacher) {
                 isDisabled
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Input
                 label="Sobrenome"
                 name="last_name"
@@ -82,8 +96,8 @@ export default function Register(props: IListOneTeacher) {
               />
             </Grid>
 
-            <Grid item xs={12} md={6}>
-              <Input
+            <Grid item xs={12} md={4}>
+              <MaskInput
                 label="Cpf"
                 name="cpf"
                 register={register}
@@ -91,7 +105,7 @@ export default function Register(props: IListOneTeacher) {
                 isDisabled
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Input
                 label="Profissão"
                 name="training"
@@ -100,12 +114,128 @@ export default function Register(props: IListOneTeacher) {
                 isDisabled
               />
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={4}>
               <Input
                 label="Data de Nascimento"
                 name="birth_date"
                 register={register}
                 error={errors?.training?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Input
+                label="E-mail"
+                name="email"
+                register={register}
+                error={errors?.email?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Input
+                label="E-mail Alternativo"
+                name="alternative_email"
+                register={register}
+                error={errors?.alternative_email?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Input
+                label="Rg"
+                name="rg"
+                register={register}
+                error={errors?.rg?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Select
+                label="Genêro"
+                name="gender"
+                register={register}
+                value={gender}
+                handleChange={(e) => setGender(e.target.value)}
+                error={errors?.gender?.message?.toString()}
+                isDisabled
+              >
+                <MenuItem value={"masculino"}>Masculino</MenuItem>
+                <MenuItem value={"feminino"}>Feminino</MenuItem>
+              </Select>
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Input
+                label="Naturalidade"
+                name="naturalness"
+                register={register}
+                error={errors?.naturalness?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Input
+                label="Escolaridade"
+                name="scholarship"
+                register={register}
+                error={errors?.scholarship?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <MaskInput
+                label="Telefone"
+                name="phone"
+                register={register}
+                error={errors?.phone?.message?.toString()}
+                isDisabled={true}
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <MaskInput
+                label="Telefone Alternativo"
+                name="alternative_phone"
+                register={register}
+                error={errors?.phone?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+          </Grid>
+          <p>Endereço</p>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
+              <Input
+                label="Rua"
+                name="street"
+                register={register}
+                error={errors?.street?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Input
+                label="Número"
+                name="number"
+                register={register}
+                error={errors?.number?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Input
+                label="Bairro"
+                name="neighborhood"
+                register={register}
+                error={errors?.neighborhood?.message?.toString()}
+                isDisabled
+              />
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <Input
+                label="Complemento"
+                name="complement"
+                register={register}
+                error={errors?.complement?.message?.toString()}
                 isDisabled
               />
             </Grid>

@@ -5,3 +5,4 @@ export { removeCookies, createSession } from "./cookie/index";
 export { formatCPF } from "./formatCpf/index";
 export { translateErrosTeacher } from "./translateTeachers";
 export { translateStatus } from "./translateStatus/index";
+export {removeMask} from "./removeMask/index"

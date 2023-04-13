@@ -6,7 +6,8 @@ import { toast } from "react-toastify";
 import { teacherServices } from "@/shared/services";
 import { ICreateOrUpdateTeacher } from "@/shared/Interfaces";
 import { useRouter } from "next/router";
-import { translateErrosTeacher } from "@/shared/helpers";
+import { translateErrosTeacher, removeMask } from "@/shared/helpers";
+import * as Yup from "yup";
 
 export const Teacher = createContext({} as ITeacherContext);
 
@@ -19,6 +20,30 @@ export function TeacherProvider({ children }: { children: React.ReactNode }) {
     deleteTeacher: deleteService,
   } = teacherServices();
 
+  const validationSchema = Yup.object().shape({
+    name: Yup.string().required("Campo obrigatório"),
+    last_name: Yup.string().required("Campo obrigatório"),
+    cpf: Yup.string().required("Campo obrigatório"),
+    training: Yup.string().required("Campo obrigatório"),
+    birth_date: Yup.string().required("Campo obrigatório"),
+    email: Yup.string()
+      .email("Digite um E-mail valido")
+      .required("Campo obrigatório"),
+    alternative_email: Yup.string()
+      .email("Digite um E-mail valido")
+      .required("Campo obrigatório"),
+    rg: Yup.string().required("Campo obrigatório"),
+    gender: Yup.string().required("Campo obrigatório"),
+    naturalness: Yup.string().required("Campo obrigatório"),
+    scholarship: Yup.string().required("Campo obrigatório"),
+    phone: Yup.string().required("Campo obrigatório"),
+    alternative_phone: Yup.string().required("Campo obrigatório"),
+    street: Yup.string().required("Campo obrigatório"),
+    number: Yup.string().required("Campo obrigatório"),
+    neighborhood: Yup.string().required("Campo obrigatório"),
+    complement: Yup.string().optional(),
+  });
+
   async function register(dataTeacher: ICreateOrUpdateTeacher) {
     try {
       const response = await registerService(dataTeacher);
@@ -27,9 +52,18 @@ export function TeacherProvider({ children }: { children: React.ReactNode }) {
         replace("/professores/1");
         return;
       }
+      if (response.status === 422) {
+        throw { error: response.data };
+      }
       throw new Error();
-    } catch {
-      toast.error("Ocorreu um erro ao cadastrar esse professor!");
+    } catch (e: any) {
+      if (e.error) {
+        for (const key in e.error) {
+          toast.error(translateErrosTeacher(key));
+        }
+      } else {
+        toast.error("Ocorreu um erro ao cadastrar esse professor!");
+      }
     }
   }
 
@@ -67,6 +101,9 @@ export function TeacherProvider({ children }: { children: React.ReactNode }) {
   function formattedValue(data: IFormTeacher): ICreateOrUpdateTeacher {
     let formatted = {
       ...data,
+      phone: removeMask(data.phone),
+      alternative_phone: removeMask(data.alternative_phone),
+      cpf: removeMask(data.cpf),
       address: {
         street: data.street,
         number: data.number,
@@ -75,11 +112,21 @@ export function TeacherProvider({ children }: { children: React.ReactNode }) {
       },
     };
 
+    delete formatted.street;
+    delete formatted.neighborhood;
+    delete formatted.number;
+    delete formatted.complement;
     return formatted;
   }
   return (
     <Teacher.Provider
-      value={{ deleteTeacher, register, update, formattedValue }}
+      value={{
+        deleteTeacher,
+        register,
+        update,
+        formattedValue,
+        validationSchema,
+      }}
     >
       {children}
     </Teacher.Provider>

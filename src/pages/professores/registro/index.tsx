@@ -10,7 +10,6 @@ import {
 } from "@/components";
 import { Divider, Grid, MenuItem } from "@mui/material";
 
-import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
@@ -18,38 +17,17 @@ import { redirectPage } from "@/shared/helpers";
 import { GetServerSideProps } from "next";
 import { TeacherProvider, useTeacher } from "@/context/teacherContext";
 
-const schema = Yup.object().shape({
-  name: Yup.string().required("Campo obrigatório"),
-  last_name: Yup.string().required("Campo obrigatório"),
-  cpf: Yup.string().required("Campo obrigatório"),
-  training: Yup.string().required("Campo obrigatório"),
-  birth_date: Yup.string().required("Campo obrigatório"),
-  email: Yup.string()
-    .email("Digite um E-mail valido")
-    .required("Campo obrigatório"),
-  alternative_email: Yup.string()
-    .email("Digite um E-mail valido")
-    .required("Campo obrigatório"),
-  rg: Yup.string().required("Campo obrigatório"),
-  gender: Yup.string().required("Campo obrigatório"),
-  naturalness: Yup.string().required("Campo obrigatório"),
-  scholarship: Yup.string().required("Campo obrigatório"),
-  phone: Yup.string().required("Campo obrigatório"),
-  alternative_phone: Yup.string().required("Campo obrigatório"),
-  street: Yup.string().required("Campo obrigatório"),
-  number: Yup.string().required("Campo obrigatório"),
-  neighborhood: Yup.string().required("Campo obrigatório"),
-  complement: Yup.string().optional(),
-});
-
 function RegisterComponent() {
+  const {
+    register: registerTeacher,
+    formattedValue,
+    validationSchema,
+  } = useTeacher();
   const {
     handleSubmit,
     register,
     formState: { errors },
-  } = useForm({ resolver: yupResolver(schema) });
-
-  const { register: registerTeacher, formattedValue } = useTeacher();
+  } = useForm({ resolver: yupResolver(validationSchema) });
 
   const { replace } = useRouter();
 
@@ -88,6 +66,7 @@ function RegisterComponent() {
               name="cpf"
               register={register}
               error={errors?.cpf?.message?.toString()}
+              isDisabled={false}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -104,6 +83,7 @@ function RegisterComponent() {
               name="birth_date"
               register={register}
               error={errors?.birth_date?.message?.toString()}
+              isDisabled={false}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -163,6 +143,7 @@ function RegisterComponent() {
               name="phone"
               register={register}
               error={errors?.phone?.message?.toString()}
+              isDisabled={false}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -171,13 +152,14 @@ function RegisterComponent() {
               name="alternative_phone"
               register={register}
               error={errors?.phone?.message?.toString()}
+              isDisabled={false}
             />
           </Grid>
         </Grid>
         <p>Endereço</p>
         <Grid container spacing={2}>
           <Grid item xs={12} md={4}>
-            <MaskInput
+            <Input
               label="Rua"
               name="street"
               register={register}
@@ -185,7 +167,7 @@ function RegisterComponent() {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <MaskInput
+            <Input
               label="Número"
               name="number"
               register={register}
@@ -193,7 +175,7 @@ function RegisterComponent() {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <MaskInput
+            <Input
               label="Bairro"
               name="neighborhood"
               register={register}
@@ -201,7 +183,7 @@ function RegisterComponent() {
             />
           </Grid>
           <Grid item xs={12} md={4}>
-            <MaskInput
+            <Input
               label="Complemento"
               name="complement"
               register={register}

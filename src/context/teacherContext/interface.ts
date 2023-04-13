@@ -14,10 +14,10 @@ export interface IFormTeacher {
   scholarship: string;
   phone: string;
   alternative_phone: string;
-  street: string;
-  number: string;
-  neighborhood: string;
-  complement: string;
+  street?: string;
+  number?: string;
+  neighborhood?: string;
+  complement?: string;
 }
 export interface ITeacherContext {
   register: (dataTeacher: ICreateOrUpdateTeacher) => Promise<void>;
@@ -27,4 +27,5 @@ export interface ITeacherContext {
   ) => Promise<void>;
   deleteTeacher: (secure_id: string) => Promise<void>;
   formattedValue: (data: IFormTeacher) => ICreateOrUpdateTeacher;
+  validationSchema: any;
 }
