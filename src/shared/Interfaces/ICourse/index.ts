@@ -17,6 +17,10 @@ export interface ICourse {
   target_audience: string;
   status: string;
   teacher: ITeacher;
+  enroll_start_date: string;
+  enroll_end_date: string;
+  start_date: string;
+  end_date: string;
 }
 export interface IListAllCourse {
   meta: IMeta;

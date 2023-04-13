@@ -5,12 +5,12 @@ import { UseFormRegister } from "react-hook-form";
 type propsType = {
   label: string;
   name: string;
-  value: string;
+  value?: string;
   register: UseFormRegister<any>;
   children: React.ReactNode;
   error?: string;
   isDisabled?: boolean;
-  handleChange: (e: any) => void;
+  handleChange?: (e: any) => void;
 };
 
 export default function Select({

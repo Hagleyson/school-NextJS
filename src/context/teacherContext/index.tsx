@@ -1,6 +1,6 @@
 import React, { createContext, useContext } from "react";
 
-import { ITeacherContext } from "./interface";
+import { IFormTeacher, ITeacherContext } from "./interface";
 import { toast } from "react-toastify";
 
 import { teacherServices } from "@/shared/services";
@@ -64,9 +64,23 @@ export function TeacherProvider({ children }: { children: React.ReactNode }) {
       toast.error(translateErrosTeacher(error.error));
     }
   }
+  function formattedValue(data: IFormTeacher): ICreateOrUpdateTeacher {
+    let formatted = {
+      ...data,
+      address: {
+        street: data.street,
+        number: data.number,
+        neighborhood: data.neighborhood,
+        complement: data.complement ?? "",
+      },
+    };
 
+    return formatted;
+  }
   return (
-    <Teacher.Provider value={{ deleteTeacher, register, update }}>
+    <Teacher.Provider
+      value={{ deleteTeacher, register, update, formattedValue }}
+    >
       {children}
     </Teacher.Provider>
   );

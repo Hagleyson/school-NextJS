@@ -22,6 +22,22 @@ const schema = Yup.object().shape({
   cpf: Yup.string().required("Campo obrigatório"),
   training: Yup.string().required("Campo obrigatório"),
   birth_date: Yup.string().required("Campo obrigatório"),
+  email: Yup.string()
+    .email("Digite um E-mail valido")
+    .required("Campo obrigatório"),
+  alternative_email: Yup.string()
+    .email("Digite um E-mail valido")
+    .required("Campo obrigatório"),
+  rg: Yup.string().required("Campo obrigatório"),
+  gender: Yup.string().required("Campo obrigatório"),
+  naturalness: Yup.string().required("Campo obrigatório"),
+  scholarship: Yup.string().required("Campo obrigatório"),
+  phone: Yup.string().required("Campo obrigatório"),
+  alternative_phone: Yup.string().required("Campo obrigatório"),
+  street: Yup.string().required("Campo obrigatório"),
+  number: Yup.string().required("Campo obrigatório"),
+  neighborhood: Yup.string().required("Campo obrigatório"),
+  complement: Yup.string().optional(),
 });
 
 function UpdateComponent({ data }: { data: IListOneTeacher }) {

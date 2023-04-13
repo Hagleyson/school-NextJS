@@ -4,9 +4,11 @@ import { InputStyled } from "./styled";
 import { masks } from "./masks";
 
 export default function MaskInput({ name, label, register, error }) {
-  console.log(error);
   return (
-    <InputMask mask={masks[name]} {...register(name)}>
+    <InputMask
+      mask={masks[name.includes("phone") ? "phone" : name]}
+      {...register(name)}
+    >
       {() => (
         <InputStyled
           label={label}
