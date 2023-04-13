@@ -11,11 +11,7 @@ export default function MaskInput({
   isDisabled,
 }) {
   return (
-    <InputMask
-      mask={masks[name.includes("phone") ? "phone" : name]}
-      disabled={isDisabled}
-      {...register(name)}
-    >
+    <InputMask mask={masks(name)} disabled={isDisabled} {...register(name)}>
       {() => (
         <InputStyled
           label={label}

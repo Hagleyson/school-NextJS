@@ -8,4 +8,5 @@ export interface ICourseContext {
   ) => Promise<void>;
   deleteCourse: (secure_id: string) => Promise<void>;
   activateOrDeactivate: (secure_id: string) => Promise<void>;
+  validationSchema: any;
 }
