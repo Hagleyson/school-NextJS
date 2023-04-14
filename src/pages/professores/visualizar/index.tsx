@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import { GetServerSideProps } from "next";
 import { redirectPage } from "@/shared/helpers";
-import { setContext } from "@/shared/lib";
+
 import { teacherServices } from "@/shared/services";
 import { IListOneTeacher } from "@/shared/Interfaces";
 import useLoading from "@/shared/hooks/useIsLoader";
@@ -264,8 +264,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   if (result) {
     return result;
   }
-
-  setContext(ctx);
 
   const { listOne } = teacherServices();
 

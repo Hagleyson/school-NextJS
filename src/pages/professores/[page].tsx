@@ -27,7 +27,7 @@ import { GetServerSideProps } from "next";
 
 import { teacherServices } from "@/shared/services";
 import { IListAllTeacher } from "@/shared/Interfaces";
-import { setContext } from "@/shared/lib";
+
 import useLoading from "@/shared/hooks/useIsLoader";
 import moment from "moment";
 import { TeacherProvider, useTeacher } from "@/context/teacherContext";
@@ -148,8 +148,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { params } = ctx;
   const page = Number(params?.page) ?? 1;
-
-  setContext(ctx);
 
   const { data } = await listAllService({
     params: {

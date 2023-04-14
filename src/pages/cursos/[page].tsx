@@ -2,7 +2,7 @@ import * as React from "react";
 import { GetServerSideProps } from "next";
 import { redirectPage, translateStatus, translateUrl } from "@/shared/helpers";
 import { courseServices } from "@/shared/services";
-import { setContext } from "@/shared/lib";
+
 import { IListAllCourse } from "@/shared/Interfaces";
 import {
   BoxTitle,
@@ -183,8 +183,6 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
 
   const { params } = ctx;
   const page = Number(params?.page) ?? 1;
-
-  setContext(ctx);
 
   const { data } = await listAllService({
     params: {
